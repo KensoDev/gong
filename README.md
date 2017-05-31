@@ -1,5 +1,7 @@
 # Gong
 
+![Logo](https://raw.githubusercontent.com/KensoDev/gong/master/img/logo.svg)
+
 ### Readme driven development
 
 This project is using readme driven development, making sure I don't miss
