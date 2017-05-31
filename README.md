@@ -1,6 +1,6 @@
 # Gong
 
-![Logo](https://raw.githubusercontent.com/KensoDev/gong/master/img/logo.svg)
+![Logo](http://assets.avi.io/logo.svg)
 
 ### Readme driven development
 
