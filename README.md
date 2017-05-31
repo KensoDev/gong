@@ -1,6 +1,6 @@
 # Gong
 
-![Logo](http://assets.avi.io/logo.svg)
+<img src="http://assets.avi.io/logo.svg" width="300" />
 
 ### Readme driven development
 
