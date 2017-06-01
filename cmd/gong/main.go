@@ -9,8 +9,11 @@ import (
 )
 
 func main() {
+	var branchType string
+
 	app := cli.NewApp()
 	app.Version = "0.0.1"
+
 	app.Commands = []cli.Command{
 		{
 			Name:  "login",
@@ -21,7 +24,7 @@ func main() {
 				domain := prompt.String("What is the jira instance URL?")
 
 				loginDetails := gong.NewLoginDetails(username, password, domain)
-				err := loginDetails.Verify()
+				_, err := loginDetails.GetClient()
 
 				if err != nil {
 					fmt.Println("Unable to login, please check your credentials")
@@ -37,6 +40,22 @@ func main() {
 
 				fmt.Println("Successfully authenticated!, saved login details to disk")
 
+				return nil
+			},
+		},
+		{
+			Name:  "start",
+			Usage: "Start working on a ticket. Creates a branch on your local repository",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:        "type",
+					Value:       "feature",
+					Usage:       "Type of branch to create eg: feature/{ticket-id}-ticket-title",
+					Destination: &branchType,
+				},
+			},
+			Action: func(c *cli.Context) error {
+				fmt.Println(branchType)
 				return nil
 			},
 		},
