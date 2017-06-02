@@ -20,6 +20,17 @@ func GetDefaultLocationLoginDetails() LoginDetails {
 	}
 }
 
+func GetAuthenticatedClient() (*jira.Client, error) {
+	loginDetails := GetDefaultLocationLoginDetails()
+	loginDetails, err := Load(loginDetails)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return loginDetails.GetClient()
+}
+
 func Load(loginDetails LoginDetails) (LoginDetails, error) {
 	fileLocation := loginDetails.GetLoginDetailsFileLocation()
 	cfg, err := ini.InsensitiveLoad(fileLocation)

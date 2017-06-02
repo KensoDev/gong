@@ -6,6 +6,7 @@ import (
 	"github.com/segmentio/go-prompt"
 	"github.com/urfave/cli"
 	"os"
+	"os/exec"
 )
 
 func main() {
@@ -55,11 +56,30 @@ func main() {
 				},
 			},
 			Action: func(c *cli.Context) error {
-				fmt.Println(branchType)
+				issueId := c.Args()[0]
+				jiraClient, err := gong.GetAuthenticatedClient()
+				if err != nil {
+					fmt.Println(err)
+					return err
+				}
+
+				branchName := gong.GetBranchName(jiraClient, issueId, branchType)
+
+				cmd := "git"
+				args := []string{"checkout", "-b", branchName}
+
+				out, err := exec.Command(cmd, args...).Output()
+
+				if err != nil {
+					fmt.Println(err)
+					return err
+				}
+
+				fmt.Println(string(out))
+
 				return nil
 			},
 		},
 	}
 	app.Run(os.Args)
-
 }
