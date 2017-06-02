@@ -65,6 +65,13 @@ func main() {
 
 				branchName := gong.GetBranchName(jiraClient, issueId, branchType)
 
+				err = gong.StartIssue(jiraClient, issueId)
+
+				if err != nil {
+					fmt.Println(err)
+					return err
+				}
+
 				cmd := "git"
 				args := []string{"checkout", "-b", branchName}
 
