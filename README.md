@@ -45,13 +45,13 @@ This will do a couple of things
 
 This is very much a work in progress and I am adding more features.
 
-Upcoming features
-
-### gong browse
+### `gong browse`
 
 While working on a branch that matches the gong regular expression (look
 above), you can type `gong browse` and it will open up a browser opened on the
 issue automatically.
+
+## Upcoming features
 
 ### gong comment
 
