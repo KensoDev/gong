@@ -13,7 +13,7 @@ func main() {
 	var branchType string
 
 	app := cli.NewApp()
-	app.Version = "0.0.1"
+	app.Version = "1.0.0"
 
 	app.Commands = []cli.Command{
 		{
