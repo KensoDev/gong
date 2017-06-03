@@ -20,9 +20,19 @@ func GetDefaultLocationLoginDetails() LoginDetails {
 	}
 }
 
-func GetAuthenticatedClient() (*jira.Client, error) {
+func GetLoginDetails() (LoginDetails, error) {
 	loginDetails := GetDefaultLocationLoginDetails()
 	loginDetails, err := Load(loginDetails)
+
+	if err != nil {
+		return LoginDetails{}, err
+	}
+
+	return loginDetails, nil
+}
+
+func GetAuthenticatedClient() (*jira.Client, error) {
+	loginDetails, err := GetLoginDetails()
 
 	if err != nil {
 		return nil, err
