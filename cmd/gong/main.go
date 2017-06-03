@@ -126,6 +126,48 @@ func main() {
 				return nil
 			},
 		},
+
+		{
+			Name:  "comment",
+			Usage: "Comment on the issue you are working on, accepts an argument or STDIN",
+			Action: func(c *cli.Context) error {
+				comment := c.Args()[0]
+
+				cmd := "git"
+				args := []string{"rev-parse", "--abbrev-ref", "HEAD"}
+
+				out, err := exec.Command(cmd, args...).Output()
+
+				if err != nil {
+					return err
+				}
+
+				branchName := string(out)
+
+				issueID, err := gong.GetIssueID(branchName)
+
+				if err != nil {
+					return err
+				}
+
+				jiraClient, err := gong.GetAuthenticatedClient()
+				if err != nil {
+					fmt.Println(err)
+					return err
+				}
+
+				err = gong.AddComment(jiraClient, issueID, comment)
+
+				if err != nil {
+					fmt.Println(err)
+					return err
+				}
+
+				fmt.Println("Comment added to the jira ticket")
+
+				return nil
+			},
+		},
 	}
 	app.Run(os.Args)
 }

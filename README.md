@@ -51,14 +51,14 @@ While working on a branch that matches the gong regular expression (look
 above), you can type `gong browse` and it will open up a browser opened on the
 issue automatically.
 
-## Upcoming features
-
-### gong comment
+### `gong comment`
 
 While working on a branch that matches the gong regular expression, you can
 type `gong comment "some comment"` and it will send a comment on the ticket. 
 
 This is a perfect way to streamline communication
+
+## Upcoming features
 
 ### gong slack
 

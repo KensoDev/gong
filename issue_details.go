@@ -18,6 +18,15 @@ func GetIssueID(branchName string) (string, error) {
 	return matches[0], nil
 }
 
+func AddComment(jiraClient *jira.Client, issueID string, commentBody string) error {
+	comment := &jira.Comment{
+		Body: commentBody,
+	}
+	_, _, err := jiraClient.Issue.AddComment(issueID, comment)
+
+	return err
+}
+
 func GetBranchName(jiraClient *jira.Client, issueId string, issueType string) string {
 	issue, _, _ := jiraClient.Issue.Get(issueId, nil)
 
