@@ -87,6 +87,45 @@ func main() {
 				return nil
 			},
 		},
+		{
+			Name:  "browse",
+			Usage: "Open a browser, going to Jira on the ticket you're working on",
+			Action: func(c *cli.Context) error {
+				cmd := "git"
+				args := []string{"rev-parse", "--abbrev-ref", "HEAD"}
+
+				out, err := exec.Command(cmd, args...).Output()
+
+				if err != nil {
+					return err
+				}
+
+				branchName := string(out)
+
+				issueID, err := gong.GetIssueID(branchName)
+
+				if err != nil {
+					return err
+				}
+
+				loginDetails, err := gong.GetLoginDetails()
+
+				if err != nil {
+					fmt.Println(err)
+					return err
+				}
+
+				issueURL := fmt.Sprintf("%s/browse/%s", loginDetails.Domain, issueID)
+
+				// TODO: Check if this is mac only
+				cmd = "open"
+				args = []string{issueURL}
+
+				_, _ = exec.Command(cmd, args...).Output()
+
+				return nil
+			},
+		},
 	}
 	app.Run(os.Args)
 }
