@@ -1,9 +1,22 @@
 package gong
 
 import (
+	"errors"
 	"fmt"
 	"github.com/andygrunwald/go-jira"
+	"regexp"
 )
+
+func GetIssueID(branchName string) (string, error) {
+	re := regexp.MustCompile(`([A-Z]+-[\d]+)`)
+	matches := re.FindAllString(branchName, -1)
+
+	if len(matches) == 0 {
+		return "", errors.New("No matches found in the branch name")
+	}
+
+	return matches[0], nil
+}
 
 func GetBranchName(jiraClient *jira.Client, issueId string, issueType string) string {
 	issue, _, _ := jiraClient.Issue.Get(issueId, nil)
