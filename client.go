@@ -15,6 +15,7 @@ type Client interface {
 	GetAuthFields() map[string]bool
 	GetName() string
 	FormatField(fieldName string, value string) string
+	Authenticate(fields map[string]string) bool
 }
 
 func NewClient(clientName string) (Client, error) {
@@ -25,7 +26,7 @@ func NewClient(clientName string) (Client, error) {
 	return nil, errors.New(fmt.Sprintf("Could not find client: %v", clientName))
 }
 
-func Login(client Client) error {
+func Login(client Client) (bool, error) {
 	fields := map[string]string{
 		"client": client.GetName(),
 	}
@@ -44,13 +45,19 @@ func Login(client Client) error {
 	err := Save(fields)
 
 	if err != nil {
-		return err
+		return false, err
 	}
 
-	return nil
+	fields, err = Load()
+
+	if err != nil {
+		return false, err
+	}
+
+	return client.Authenticate(fields), nil
 }
 
-func GetLoginDetailsFileLocation() string {
+func GetUserHomeOrDefault() string {
 	usr, err := user.Current()
 
 	if err != nil {
@@ -60,11 +67,32 @@ func GetLoginDetailsFileLocation() string {
 	return usr.HomeDir
 }
 
-func Save(values map[string]string) error {
-	dir := GetLoginDetailsFileLocation()
-	fileLocation := filepath.Join(dir, ".gong.json")
+func GetFileLocation() string {
+	dir := GetUserHomeOrDefault()
+	return filepath.Join(dir, ".gong.json")
+}
 
-	fmt.Println(fileLocation)
+func Load() (map[string]string, error) {
+	fileLocation := GetFileLocation()
+	var c = map[string]string{}
+
+	file, err := ioutil.ReadFile(fileLocation)
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(file, &c)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return c, nil
+}
+
+func Save(values map[string]string) error {
+	fileLocation := GetFileLocation()
 	loginDetails, err := json.Marshal(values)
 
 	if err != nil {

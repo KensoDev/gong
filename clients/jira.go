@@ -2,6 +2,7 @@ package jiraapi
 
 import (
 	"fmt"
+	"github.com/andygrunwald/go-jira"
 )
 
 type JiraClient struct{}
@@ -20,7 +21,6 @@ func (j JiraClient) FormatField(fieldName string, value string) string {
 	}
 
 	return value
-
 }
 
 func (j JiraClient) GetAuthFields() map[string]bool {
@@ -30,4 +30,20 @@ func (j JiraClient) GetAuthFields() map[string]bool {
 		"password":       true,
 		"project_prefix": false,
 	}
+}
+
+func (j JiraClient) Authenticate(fields map[string]string) bool {
+	jiraClient, err := jira.NewClient(nil, fields["domain"])
+
+	if err != nil {
+		return false
+	}
+
+	res, err := jiraClient.Authentication.AcquireSessionCookie(fields["username"], fields["password"])
+
+	if err != nil || res == false {
+		return false
+	}
+
+	return true
 }

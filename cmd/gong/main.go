@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"github.com/fatih/color"
 	"github.com/kensodev/gong"
 	"github.com/urfave/cli"
 	"os"
@@ -20,11 +20,20 @@ func main() {
 				client, err := gong.NewClient(clientName)
 
 				if err != nil {
-					fmt.Println(err)
+					color.Red(err.Error())
 					return nil
 				}
 
-				return gong.Login(client)
+				_, err = gong.Login(client)
+
+				if err != nil {
+					color.Red(err.Error())
+					return err
+				}
+
+				color.Green("Logged in!")
+
+				return nil
 			},
 		},
 	}
