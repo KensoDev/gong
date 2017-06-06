@@ -56,7 +56,13 @@ func main() {
 				},
 			},
 			Action: func(c *cli.Context) error {
+				if c.NArg() == 0 {
+					fmt.Println("You have to pass in a ticket id as an argument")
+					return nil
+				}
+
 				issueId := c.Args()[0]
+
 				jiraClient, err := gong.GetAuthenticatedClient()
 				if err != nil {
 					fmt.Println(err)
