@@ -29,12 +29,25 @@
 
     gong comment (Open up vim, once you save, it will save the comment to Jira (or others))
 
+  ✔ gong start should not crash when no issueid is passed in @done (17-06-05 21:12)
+
   ☐ gong next/pick
     Show you the next items on your backlog, be able to start one without opening the browser
 
   ☐ gong create
     Create a ticket, outputting the ticket id
 
-  ☐ REFACTOR
+    Create a ticket is working, there is a work in progress branch, currently on hold because I want to make the inteface cleaner, pass interface{} around the objects and make sure we have clean API.
+
+  ☐ REFACTOR (GLOB-1111)
    ☐ Extracting the interface, allowing more adapaters (Jira, PivotalTracker)
+
+   ☐ Look into interface{}
+   ☐ Check whether you want to move away from .ini to .json as the config storage (Similar to docker config vs AMAZON config)
+     Support the generalization of how many items you need to authenticate with
+       user/pass
+       user/pass/domain (Jira)
+       user/pass/apiToken
+
+
 
