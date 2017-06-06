@@ -63,7 +63,11 @@ This is very much a work in progress and I am adding more features.
 
 Send a message to a slack channel, tagging the issue you are working on
 
-### gong create
+### `gong create`
 
 Create a ticket, automatically giving you an id and starting to work on the
 issue.
+
+### `gong next/pick`
+
+Show you the next items on your backlog, be able to start one without opening the browser

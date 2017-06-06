@@ -1,6 +1,7 @@
   ✔ `gong login` @done (17-05-30 21:09)
     Prompt you the username, password, base URL
     Saves the loging details to $HOME/.gong.ini
+      ✔ Grab the authenication details from the .ini file @done (17-06-01 21:51)
 
   ✔ `gong start {ticketid:GLOB-1111} {type}` {bug/feature/hotfix} @done (17-06-01 21:51)
 
@@ -9,23 +10,31 @@
 
       Branch: feature/GLOB-9387-test-issue-please-ignore-me
 
-    ✔ Grab the authenication details from the .ini file @done (17-06-01 21:51)
 
     ✔ Create a slug based on the ticket id, name and the type of the branch @done (17-05-31 21:46)
-      ☐ Move the ticket to a started state @phase2
+      ✔ Move the ticket to a started state @phase2 @done (17-06-05 21:01)
     ✔ Grab the ticket details @done (17-06-01 21:51)
 
   ✔ Transitions @done (17-06-01 23:13)
 
-  ☐ gong browse
+  ✔ gong browse @done (17-06-05 20:53)
     (hub browse)
 
     While you are on a branch, you can do gong browse, it will take you to the issue in the browser.
 
-  ☐ gong comment (While you are on a branch) @phase2
+  ✔ gong comment (While you are on a branch) @phase2 @done (17-06-05 20:53)
     feature/GLOB-1111-some-feature
 
     gong comment "This is my comment"
 
     gong comment (Open up vim, once you save, it will save the comment to Jira (or others))
+
+  ☐ gong next/pick
+    Show you the next items on your backlog, be able to start one without opening the browser
+
+  ☐ gong create
+    Create a ticket, outputting the ticket id
+
+  ☐ REFACTOR
+   ☐ Extracting the interface, allowing more adapaters (Jira, PivotalTracker)
 
