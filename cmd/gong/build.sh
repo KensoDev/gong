@@ -1,0 +1,2 @@
+bumpversion patch
+go build
