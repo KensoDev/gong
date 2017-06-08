@@ -34,9 +34,19 @@ func (c *FakeClient) Start(issueType, issueId string) (string, error) {
 	return fmt.Sprintf("%s/%s", issueType, issueId), nil
 }
 
+func (c *FakeClient) Browse(branchName string) (string, error) {
+	return "https://www.fake.com/FAKE-1111", nil
+}
+
 func (s *ClientSuite) TestClientStartIssue(c *C) {
 	client := &FakeClient{}
 	branchName, _ := Start(client, "feature", "111")
-
 	c.Assert(branchName, Equals, "feature/111")
+}
+
+func (s *ClientSuite) TestBrowse(c *C) {
+	client := &FakeClient{}
+	branchName := "feature/FAKE-1111-some-issue-title"
+	url, _ := Browse(client, branchName)
+	c.Assert(url, Equals, "https://www.fake.com/FAKE-1111")
 }

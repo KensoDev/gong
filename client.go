@@ -16,6 +16,11 @@ type Client interface {
 	FormatField(fieldName string, value string) string
 	Authenticate(fields map[string]string) bool
 	Start(issueType string, issueId string) (branchName string, err error)
+	Browse(branchName string) (string, error)
+}
+
+func Browse(client Client, branchName string) (string, error) {
+	return client.Browse(branchName)
 }
 
 func Start(client Client, issueType, issueId string) (string, error) {

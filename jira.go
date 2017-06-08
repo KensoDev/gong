@@ -1,12 +1,16 @@
 package gong
 
 import (
+	"errors"
 	"fmt"
+	"regexp"
+
 	"github.com/andygrunwald/go-jira"
 )
 
 type JiraClient struct {
 	client *jira.Client
+	config map[string]string
 }
 
 func NewJiraClient() *JiraClient {
@@ -15,6 +19,27 @@ func NewJiraClient() *JiraClient {
 
 func (j *JiraClient) GetName() string {
 	return "jira"
+}
+
+func (j *JiraClient) Browse(branchName string) (string, error) {
+	re := regexp.MustCompile(`([A-Z]+-[\d]+)`)
+	matches := re.FindAllString(branchName, -1)
+
+	domain, ok := j.config["domain"]
+
+	if !ok {
+		return "", errors.New("Could not locate domain in config")
+	}
+
+	if len(matches) == 0 {
+		return "", errors.New("Could not find issue id regex in the branch name")
+	}
+
+	issueId := matches[0]
+
+	url := fmt.Sprintf("%s/browse/%s", domain, issueId)
+
+	return url, nil
 }
 
 func (j *JiraClient) GetBranchName(issueType string, issueId string) (string, error) {
@@ -97,13 +122,12 @@ func (j *JiraClient) Authenticate(fields map[string]string) bool {
 
 	res, err := jiraClient.Authentication.AcquireSessionCookie(fields["username"], fields["password"])
 
-	fmt.Println(res)
-
 	if err != nil || res == false {
 		return false
 	}
 
 	j.client = jiraClient
+	j.config = fields
 
 	return true
 }

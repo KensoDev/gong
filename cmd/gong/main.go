@@ -1,11 +1,12 @@
 package main
 
 import (
+	"os"
+	"os/exec"
+
 	"github.com/fatih/color"
 	"github.com/kensodev/gong"
 	"github.com/urfave/cli"
-	"os"
-	"os/exec"
 )
 
 func main() {
@@ -81,6 +82,43 @@ func main() {
 				}
 
 				color.Green(string(out))
+
+				return nil
+			},
+		},
+		{
+			Name:  "browse",
+			Usage: "Browse to the jira URL of the branch you are working on",
+			Action: func(c *cli.Context) error {
+				cmd := "git"
+				args := []string{"rev-parse", "--abbrev-ref", "HEAD"}
+
+				out, err := exec.Command(cmd, args...).Output()
+
+				if err != nil {
+					return err
+				}
+
+				branchName := string(out)
+
+				client, err := gong.NewAuthenticatedClient()
+
+				if err != nil {
+					color.Red(err.Error())
+					return err
+				}
+
+				url, err := gong.Browse(client, branchName)
+
+				if err != nil {
+					color.Red(err.Error())
+					return err
+				}
+
+				cmd = "open"
+				args = []string{url}
+
+				_, _ = exec.Command(cmd, args...).Output()
 
 				return nil
 			},
