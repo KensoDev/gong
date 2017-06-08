@@ -12,7 +12,7 @@ import (
 
 func main() {
 	app := cli.NewApp()
-	app.Version = "v1.1.1"
+	app.Version = "v1.1.2"
 
 	var branchType string
 
