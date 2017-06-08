@@ -28,7 +28,6 @@ Successfully logged in to Jira, congrats!
 Login will check your credentials against Jira, if details are correct, it will
 save the login details to disk. By default this goes to `$HOME/.gong.ini`
 
-
 ### Start working on an issue
 
 `gong start {issue-id} --type feature`
@@ -40,10 +39,6 @@ This will do a couple of things
 
 1. Create a branch name `{type}/{issue-id}-{issue-title-sluggified}`
 2. Transition the issue to a started state
-
-## Work in progress
-
-This is very much a work in progress and I am adding more features.
 
 ### `gong browse`
 
@@ -58,13 +53,21 @@ type `gong comment "some comment"` and it will send a comment on the ticket.
 
 This is a perfect way to streamline communication
 
+## Work in progress
+
+This is very much a work in progress and I am adding more features.
+
 ## Upcoming features
 
 ### gong slack
 
 Send a message to a slack channel, tagging the issue you are working on
 
-### gong create
+### `gong create`
 
 Create a ticket, automatically giving you an id and starting to work on the
 issue.
+
+### `gong next/pick`
+
+Show you the next items on your backlog, be able to start one without opening the browser

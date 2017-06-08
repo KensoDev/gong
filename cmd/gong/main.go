@@ -1,45 +1,42 @@
 package main
 
 import (
-	"fmt"
-	"github.com/kensodev/gong"
-	"github.com/segmentio/go-prompt"
-	"github.com/urfave/cli"
+	"io/ioutil"
 	"os"
 	"os/exec"
+
+	"github.com/fatih/color"
+	"github.com/kensodev/gong"
+	"github.com/urfave/cli"
 )
 
 func main() {
-	var branchType string
-
 	app := cli.NewApp()
-	app.Version = "1.0.0"
+	app.Version = "v1.2.0"
+
+	var branchType string
 
 	app.Commands = []cli.Command{
 		{
 			Name:  "login",
 			Usage: "Login to your Jira Instance",
 			Action: func(c *cli.Context) error {
-				username := prompt.String("What is your Jira username/email?")
-				password := prompt.PasswordMasked("What is your password?")
-				domain := prompt.String("What is the jira instance URL?")
-
-				loginDetails := gong.NewLoginDetails(username, password, domain)
-				_, err := loginDetails.GetClient()
+				clientName := c.Args()[0]
+				client, err := gong.NewClient(clientName)
 
 				if err != nil {
-					fmt.Println("Unable to login, please check your credentials")
+					color.Red(err.Error())
+					return nil
+				}
+
+				_, err = gong.Login(client)
+
+				if err != nil {
+					color.Red(err.Error())
 					return err
 				}
 
-				err = loginDetails.Save()
-
-				if err != nil {
-					fmt.Println("Unable to save file to disk")
-					return err
-				}
-
-				fmt.Println("Successfully authenticated!, saved login details to disk")
+				color.Green("Logged in!")
 
 				return nil
 			},
@@ -56,20 +53,23 @@ func main() {
 				},
 			},
 			Action: func(c *cli.Context) error {
-				issueId := c.Args()[0]
-				jiraClient, err := gong.GetAuthenticatedClient()
-				if err != nil {
-					fmt.Println(err)
-					return err
+				if c.NArg() == 0 {
+					color.Red("You have to pass in a ticket id as an argument")
+					return nil
 				}
 
-				branchName := gong.GetBranchName(jiraClient, issueId, branchType)
+				issueId := c.Args()[0]
 
-				err = gong.StartIssue(jiraClient, issueId)
+				client, err := gong.NewAuthenticatedClient()
 
 				if err != nil {
-					fmt.Println(err)
-					return err
+					color.Red("Problem with starting the issue")
+				}
+
+				branchName, err := gong.Start(client, branchType, issueId)
+
+				if err != nil {
+					color.Red("Problem with starting the issue")
 				}
 
 				cmd := "git"
@@ -78,18 +78,18 @@ func main() {
 				out, err := exec.Command(cmd, args...).Output()
 
 				if err != nil {
-					fmt.Println(err)
+					color.Red(err.Error())
 					return err
 				}
 
-				fmt.Println(string(out))
+				color.Green(string(out))
 
 				return nil
 			},
 		},
 		{
 			Name:  "browse",
-			Usage: "Open a browser, going to Jira on the ticket you're working on",
+			Usage: "Browse to the jira URL of the branch you are working on",
 			Action: func(c *cli.Context) error {
 				cmd := "git"
 				args := []string{"rev-parse", "--abbrev-ref", "HEAD"}
@@ -102,36 +102,40 @@ func main() {
 
 				branchName := string(out)
 
-				issueID, err := gong.GetIssueID(branchName)
+				client, err := gong.NewAuthenticatedClient()
 
 				if err != nil {
+					color.Red(err.Error())
 					return err
 				}
 
-				loginDetails, err := gong.GetLoginDetails()
+				url, err := gong.Browse(client, branchName)
 
 				if err != nil {
-					fmt.Println(err)
+					color.Red(err.Error())
 					return err
 				}
 
-				issueURL := fmt.Sprintf("%s/browse/%s", loginDetails.Domain, issueID)
-
-				// TODO: Check if this is mac only
 				cmd = "open"
-				args = []string{issueURL}
+				args = []string{url}
 
 				_, _ = exec.Command(cmd, args...).Output()
 
 				return nil
 			},
 		},
-
 		{
 			Name:  "comment",
-			Usage: "Comment on the issue you are working on, accepts an argument or STDIN",
+			Usage: "Comment on the ticket for the branch you are working on",
 			Action: func(c *cli.Context) error {
-				comment := c.Args()[0]
+				bytes, err := ioutil.ReadAll(os.Stdin)
+
+				if err != nil {
+					color.Red("Could not read stdin")
+					return err
+				}
+
+				comment := string(bytes)
 
 				cmd := "git"
 				args := []string{"rev-parse", "--abbrev-ref", "HEAD"}
@@ -144,28 +148,22 @@ func main() {
 
 				branchName := string(out)
 
-				issueID, err := gong.GetIssueID(branchName)
+				client, err := gong.NewAuthenticatedClient()
 
 				if err != nil {
+					color.Red(err.Error())
 					return err
 				}
 
-				jiraClient, err := gong.GetAuthenticatedClient()
-				if err != nil {
-					fmt.Println(err)
-					return err
-				}
-
-				err = gong.AddComment(jiraClient, issueID, comment)
+				err = gong.Comment(client, branchName, comment)
 
 				if err != nil {
-					fmt.Println(err)
+					color.Red(err.Error())
 					return err
 				}
-
-				fmt.Println("Comment added to the jira ticket")
 
 				return nil
+
 			},
 		},
 	}
