@@ -17,6 +17,11 @@ type Client interface {
 	Authenticate(fields map[string]string) bool
 	Start(issueType string, issueId string) (branchName string, err error)
 	Browse(branchName string) (string, error)
+	Comment(branchName, comment string) error
+}
+
+func Comment(client Client, branchName, comment string) error {
+	return client.Comment(branchName, comment)
 }
 
 func Browse(client Client, branchName string) (string, error) {

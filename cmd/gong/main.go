@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/ioutil"
 	"os"
 	"os/exec"
 
@@ -11,7 +12,7 @@ import (
 
 func main() {
 	app := cli.NewApp()
-	app.Version = "1.0.0"
+	app.Version = "1.1.0"
 
 	var branchType string
 
@@ -121,6 +122,48 @@ func main() {
 				_, _ = exec.Command(cmd, args...).Output()
 
 				return nil
+			},
+		},
+		{
+			Name:  "comment",
+			Usage: "Comment on the ticket for the branch you are working on",
+			Action: func(c *cli.Context) error {
+				bytes, err := ioutil.ReadAll(os.Stdin)
+
+				if err != nil {
+					color.Red("Could not read stdin")
+					return err
+				}
+
+				comment := string(bytes)
+
+				cmd := "git"
+				args := []string{"rev-parse", "--abbrev-ref", "HEAD"}
+
+				out, err := exec.Command(cmd, args...).Output()
+
+				if err != nil {
+					return err
+				}
+
+				branchName := string(out)
+
+				client, err := gong.NewAuthenticatedClient()
+
+				if err != nil {
+					color.Red(err.Error())
+					return err
+				}
+
+				err = gong.Comment(client, branchName, comment)
+
+				if err != nil {
+					color.Red(err.Error())
+					return err
+				}
+
+				return nil
+
 			},
 		},
 	}

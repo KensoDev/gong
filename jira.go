@@ -21,9 +21,32 @@ func (j *JiraClient) GetName() string {
 	return "jira"
 }
 
-func (j *JiraClient) Browse(branchName string) (string, error) {
+func GetIssueId(branchName string) string {
 	re := regexp.MustCompile(`([A-Z]+-[\d]+)`)
 	matches := re.FindAllString(branchName, -1)
+
+	if len(matches) == 0 {
+		return ""
+	}
+
+	return matches[0]
+}
+
+func (j *JiraClient) Comment(branchName, comment string) error {
+	fmt.Println(branchName)
+	issueId := GetIssueId(branchName)
+	fmt.Println(issueId)
+
+	jiraComment := &jira.Comment{
+		Body: comment,
+	}
+	_, _, err := j.client.Issue.AddComment(issueId, jiraComment)
+
+	return err
+}
+
+func (j *JiraClient) Browse(branchName string) (string, error) {
+	issueId := GetIssueId(branchName)
 
 	domain, ok := j.config["domain"]
 
@@ -31,11 +54,9 @@ func (j *JiraClient) Browse(branchName string) (string, error) {
 		return "", errors.New("Could not locate domain in config")
 	}
 
-	if len(matches) == 0 {
-		return "", errors.New("Could not find issue id regex in the branch name")
+	if issueId == "" {
+		return "", errors.New("Could not find issue id in the branch name")
 	}
-
-	issueId := matches[0]
 
 	url := fmt.Sprintf("%s/browse/%s", domain, issueId)
 

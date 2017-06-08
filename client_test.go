@@ -38,6 +38,10 @@ func (c *FakeClient) Browse(branchName string) (string, error) {
 	return "https://www.fake.com/FAKE-1111", nil
 }
 
+func (c *FakeClient) Comment(branchName, comment string) error {
+	return nil
+}
+
 func (s *ClientSuite) TestClientStartIssue(c *C) {
 	client := &FakeClient{}
 	branchName, _ := Start(client, "feature", "111")
@@ -49,4 +53,12 @@ func (s *ClientSuite) TestBrowse(c *C) {
 	branchName := "feature/FAKE-1111-some-issue-title"
 	url, _ := Browse(client, branchName)
 	c.Assert(url, Equals, "https://www.fake.com/FAKE-1111")
+}
+
+func (s *ClientSuite) TestComment(c *C) {
+	client := &FakeClient{}
+	branchName := "feature/FAKE-1111-some-issue-title"
+	comment := "This is a sample comment"
+	err := Comment(client, branchName, comment)
+	c.Assert(err, Equals, nil)
 }
