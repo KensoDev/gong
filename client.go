@@ -2,7 +2,6 @@ package gong
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"github.com/segmentio/go-prompt"
 	"io/ioutil"
@@ -10,36 +9,48 @@ import (
 	"path/filepath"
 )
 
+// Client : Public interface for the generic client
 type Client interface {
 	GetAuthFields() map[string]bool
 	GetName() string
 	FormatField(fieldName string, value string) string
 	Authenticate(fields map[string]string) bool
-	Start(issueType string, issueId string) (branchName string, err error)
+	Start(issueType string, issueID string) (branchName string, err error)
 	Browse(branchName string) (string, error)
 	Comment(branchName, comment string) error
+	PrepareCommitMessage(branchName, commitMessage string) string
 }
 
+// PrepareCommitMessage : Prepares the commit message and returns a new commit message
+func PrepareCommitMessage(client Client, branchName, commitMessage string) string {
+	return client.PrepareCommitMessage(branchName, commitMessage)
+}
+
+// Comment : Comment on an issue
 func Comment(client Client, branchName, comment string) error {
 	return client.Comment(branchName, comment)
 }
 
+// Browse : Open a browser on the issue related to the branch
 func Browse(client Client, branchName string) (string, error) {
 	return client.Browse(branchName)
 }
 
-func Start(client Client, issueType, issueId string) (string, error) {
-	return client.Start(issueType, issueId)
+// Start : Start working on an issue
+func Start(client Client, issueType, issueID string) (string, error) {
+	return client.Start(issueType, issueID)
 }
 
+// NewClient : Return a new client that matches the name passed in
 func NewClient(clientName string) (Client, error) {
 	if clientName == "jira" {
 		return NewJiraClient(), nil
 	}
 
-	return nil, errors.New(fmt.Sprintf("Could not find client: %v", clientName))
+	return nil, fmt.Errorf("Could not find client: %v", clientName)
 }
 
+// NewAuthenticatedClient : Return a new client authenticated
 func NewAuthenticatedClient() (Client, error) {
 	fields, err := Load()
 
@@ -59,9 +70,10 @@ func NewAuthenticatedClient() (Client, error) {
 		return client, nil
 	}
 
-	return nil, errors.New("Could not load authenticated client")
+	return nil, fmt.Errorf("Could not load authenticated client")
 }
 
+// Login : Logs the user into the specified client
 func Login(client Client) (bool, error) {
 	clientName := client.GetName()
 
@@ -96,7 +108,7 @@ func Login(client Client) (bool, error) {
 	return client.Authenticate(fields), nil
 }
 
-func GetUserHomeOrDefault() string {
+func getUserHomeOrDefault() string {
 	usr, err := user.Current()
 
 	if err != nil {
@@ -106,13 +118,14 @@ func GetUserHomeOrDefault() string {
 	return usr.HomeDir
 }
 
-func GetFileLocation() string {
-	dir := GetUserHomeOrDefault()
+func getFileLocation() string {
+	dir := getUserHomeOrDefault()
 	return filepath.Join(dir, ".gong.json")
 }
 
+// Load : Load the configuration from a file
 func Load() (map[string]string, error) {
-	fileLocation := GetFileLocation()
+	fileLocation := getFileLocation()
 	var c = map[string]string{}
 
 	file, err := ioutil.ReadFile(fileLocation)
@@ -130,8 +143,9 @@ func Load() (map[string]string, error) {
 	return c, nil
 }
 
+// Save : saves the configuration to a file
 func Save(values map[string]string) error {
-	fileLocation := GetFileLocation()
+	fileLocation := getFileLocation()
 	loginDetails, err := json.Marshal(values)
 
 	if err != nil {
