@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -12,7 +13,7 @@ import (
 
 func main() {
 	app := cli.NewApp()
-	app.Version = "v1.2.0"
+	app.Version = "v1.2.2"
 
 	var branchType string
 
@@ -164,6 +165,42 @@ func main() {
 
 				return nil
 
+			},
+		},
+		{
+			Name:  "prepare-commit-message",
+			Usage: "This is a prepare-commit-message hook for git",
+			Action: func(c *cli.Context) error {
+				client, err := gong.NewAuthenticatedClient()
+
+				if err != nil {
+					color.Red("Problem with starting the issue")
+					return err
+				}
+
+				cmd := "git"
+				args := []string{"rev-parse", "--abbrev-ref", "HEAD"}
+
+				out, err := exec.Command(cmd, args...).Output()
+
+				if err != nil {
+					return err
+				}
+
+				branchName := string(out)
+				bytes, err := ioutil.ReadAll(os.Stdin)
+
+				if err != nil {
+					color.Red("Could not read stdin")
+					return err
+				}
+
+				commitMessage := string(bytes)
+				newCommitMessge := gong.PrepareCommitMessage(client, branchName, commitMessage)
+
+				fmt.Println(newCommitMessge)
+
+				return nil
 			},
 		},
 	}
