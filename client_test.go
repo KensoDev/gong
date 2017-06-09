@@ -18,27 +18,27 @@ func (f *FakeClient) FormatField(fieldName string, value string) string {
 	return ""
 }
 
-func (receiver *FakeClient) GetAuthFields() map[string]bool {
+func (f *FakeClient) GetAuthFields() map[string]bool {
 	return map[string]bool{}
 }
 
-func (c *FakeClient) GetName() string {
+func (f *FakeClient) GetName() string {
 	return "fakeclient"
 }
 
-func (c *FakeClient) Authenticate(field map[string]string) bool {
+func (f *FakeClient) Authenticate(field map[string]string) bool {
 	return false
 }
 
-func (c *FakeClient) Start(issueType, issueId string) (string, error) {
-	return fmt.Sprintf("%s/%s", issueType, issueId), nil
+func (f *FakeClient) Start(issueType, issueID string) (string, error) {
+	return fmt.Sprintf("%s/%s", issueType, issueID), nil
 }
 
-func (c *FakeClient) Browse(branchName string) (string, error) {
+func (f *FakeClient) Browse(branchName string) (string, error) {
 	return "https://www.fake.com/FAKE-1111", nil
 }
 
-func (c *FakeClient) Comment(branchName, comment string) error {
+func (f *FakeClient) Comment(branchName, comment string) error {
 	return nil
 }
 

@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// SlugifyTitle : Make sure to clean up the branch names
 func SlugifyTitle(ticketTitle string) string {
 	re := regexp.MustCompile("[^a-z0-9]+")
 
