@@ -18,6 +18,12 @@ type Client interface {
 	Start(issueType string, issueID string) (branchName string, err error)
 	Browse(branchName string) (string, error)
 	Comment(branchName, comment string) error
+	PrepareCommitMessage(branchName, commitMessage string) string
+}
+
+// PrepareCommitMessage : Prepares the commit message and returns a new commit message
+func PrepareCommitMessage(client Client, branchName, commitMessage string) string {
+	return client.PrepareCommitMessage(branchName, commitMessage)
 }
 
 // Comment : Comment on an issue

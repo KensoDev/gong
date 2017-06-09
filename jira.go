@@ -24,6 +24,20 @@ func (j *JiraClient) GetName() string {
 	return "jira"
 }
 
+// PrepareCommitMessage : Returns a string with the issue id in the link
+func (j *JiraClient) PrepareCommitMessage(branchName, commitMessage string) string {
+	issueID := GetIssueID(branchName)
+	url, err := j.Browse(branchName)
+
+	if err != nil {
+		return commitMessage
+	}
+
+	patchedCommitMessage := fmt.Sprintf(`[%s](%s)`, issueID, url)
+
+	return patchedCommitMessage
+}
+
 // GetIssueID : returns the issue id from a branch name
 func GetIssueID(branchName string) string {
 	re := regexp.MustCompile(`([A-Z]+-[\d]+)`)
