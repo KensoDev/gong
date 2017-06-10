@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# Automatically adds branch name and branch description to every commit message.
+#
+
+echo "$(cat $1)\n$(cat $1 | gong prepare-commit-message)" > $1
