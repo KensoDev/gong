@@ -1,13 +1,9 @@
 We are in the process of refactoring to a generic client interface which you can easily extend to differnet clients.
 
- ☐ gong comment 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+ ☐ Git commit hook (Prepare commit message hook)
+
+ ☐ ./gong create (Creates a ticket from a template)
+   The most involved feature
+
+   UX issue (Don't mean UI)
+   Setup issue

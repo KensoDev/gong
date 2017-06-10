@@ -4,29 +4,29 @@
 
 ## Summary
 
-Working with Jira can be a delight but it can also be a huge pain if you are
-like me, working in the terminal most of the day. Opening the browser and
-entering a bunch of fields can be a real pain.
+Gong is a CLI to make working with an issue tracker (look at the supported clients) and still keeping your flow going in the terminal.
 
-I created (am creating) jglow to solve a bunch of my pains in managing my flow
+You can easily start branches off of issues, comment and also link commits to the issue URL.
 
 ## Usage
+
+### Currently supported clients
+
+* Jira
+
+If you would like to contribute a different client, please feel free to submit a PR
 
 ### Login
 
 In order to use `gong` you first you need to login.
 
-`gong login` will prompt you 3 things.
+`gong login {client-name}`
 
-```
-Type your username please: avi.zurel@DOMAIN.com
-Please type your password. Don't worry, nothing will show on the screen: ************************
-What is the instance URL for Jira (no need for https://): ORG.atlassian.net
-Successfully logged in to Jira, congrats!
-```
+Each of the supported clients will prompt the required fields in order to login to the system. Jira will need username, pass and a couple more while others might only need an API token.
 
-Login will check your credentials against Jira, if details are correct, it will
-save the login details to disk. By default this goes to `$HOME/.gong.ini`
+Once you input all of the details the client will attempt to login. If succeeded it will let you know.
+
+[![asciicast](https://asciinema.org/a/dcko3kv5xwobpf4rgj0e4ulyo.png)](https://asciinema.org/a/dcko3kv5xwobpf4rgj0e4ulyo)
 
 ### Start working on an issue
 
@@ -40,6 +40,8 @@ This will do a couple of things
 1. Create a branch name `{type}/{issue-id}-{issue-title-sluggified}`
 2. Transition the issue to a started state
 
+[![asciicast](https://asciinema.org/a/c5libsysjmb5f8f8gizkbldzv.png)](https://asciinema.org/a/c5libsysjmb5f8f8gizkbldzv)
+
 ### `gong browse`
 
 While working on a branch that matches the gong regular expression (look
@@ -49,17 +51,35 @@ issue automatically.
 ### `gong comment`
 
 While working on a branch that matches the gong regular expression, you can
-type `gong comment "some comment"` and it will send a comment on the ticket. 
+type `echo "comment" | gong comment` and it will send a comment on the ticket.
 
-This is a perfect way to streamline communication
+### Why a pipe?
 
-## Work in progress
+The reason for choosing a pipe and not just have the comment as an argument is to have the ability to send **any** output to the comment.
 
-This is very much a work in progress and I am adding more features.
+What I find most useful is to send diffs, files, buffers from vim and more.
+
+With this approach, I find I write much better comments to tickets. You will do the same :)
+
+![asciicast](https://asciinema.org/a/d0rcjavbv55lbq1xpsrqiyyu6.png)](https://asciinema.org/a/d0rcjavbv55lbq1xpsrqiyyu6)
+
+### `gong prepare-commit-message`
+
+This is **not** meant to be used directly, instead it is meant to be wrapped with simple wrapper git hooks.
+
+Sample hooks can be found in `git-hooks` directory.
+
+All you need to do is to copy them into your `.git/hooks` directory.
+
+This will add a link to the issue to every commit. Whether you do `git commit "commit message" or edit the commit message using the editor with `git commit`
+
+## Issues/Feedback
+
+If you have any issues, please open one here on Github or hit me up on twitter [@KensoDev](https://twitter.com/KensoDev)
 
 ## Upcoming features
 
-### gong slack
+### `gong slack`
 
 Send a message to a slack channel, tagging the issue you are working on
 

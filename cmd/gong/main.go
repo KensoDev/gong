@@ -13,7 +13,7 @@ import (
 
 func main() {
 	app := cli.NewApp()
-	app.Version = "v1.3.0"
+	app.Version = "v1.3.3"
 
 	var branchType string
 
@@ -144,6 +144,8 @@ func main() {
 				out, err := exec.Command(cmd, args...).Output()
 
 				if err != nil {
+					message := fmt.Sprintf("Could not post message: %s. This can happen on empty repos", err)
+					color.Red(message)
 					return err
 				}
 

@@ -105,7 +105,13 @@ func Login(client Client) (bool, error) {
 		return false, err
 	}
 
-	return client.Authenticate(fields), nil
+	authenticated := client.Authenticate(fields)
+
+	if authenticated {
+		return true, nil
+	}
+
+	return false, fmt.Errorf("Cloud not login")
 }
 
 func getUserHomeOrDefault() string {
