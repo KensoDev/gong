@@ -3,4 +3,4 @@
 # Automatically adds branch name and branch description to every commit message.
 #
 
-echo "$1\n$(cat $1 | gong prepare-commit-message)"
+echo "$1\n\n$(cat $1 | gong prepare-commit-message)"

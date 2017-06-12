@@ -73,6 +73,16 @@ All you need to do is to copy them into your `.git/hooks` directory.
 
 This will add a link to the issue to every commit. Whether you do `git commit "commit message" or edit the commit message using the editor with `git commit`
 
+### Install commit hooks on your repository 
+
+```
+curl https://raw.githubusercontent.com/KensoDev/gong/develop/git-hooks/prepare-commit-msg > .git/hooks/prepare-commit-message
+chmod +x .git/hooks/prepare-commit-message
+
+curl https://raw.githubusercontent.com/KensoDev/gong/develop/git-hooks/commit-msg > .git/hooks/commit-message
+chmod +x .git/hooks/commit-message
+```
+
 ## Issues/Feedback
 
 If you have any issues, please open one here on Github or hit me up on twitter [@KensoDev](https://twitter.com/KensoDev)
