@@ -10,6 +10,18 @@ You can easily start branches off of issues, comment and also link commits to th
 
 ## Usage
 
+### Installation 
+
+Head over to the [Github releases](https://github.com/KensoDev/gong/releases).
+The latest releases all have executables for OSX and linux.
+
+I **did not** test gong on windows so if you want to build for windows and
+test, please let me know.
+
+Once you download the latest release, put it in your `PATH` and you can now use
+`gong`
+
+
 ### Currently supported clients
 
 * Jira
