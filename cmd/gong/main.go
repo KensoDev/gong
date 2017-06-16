@@ -20,7 +20,7 @@ func main() {
 	app.Commands = []cli.Command{
 		{
 			Name:  "login",
-			Usage: "Login to your Jira Instance",
+			Usage: "Login to your project managment tool instance",
 			Action: func(c *cli.Context) error {
 				clientName := c.Args()[0]
 				client, err := gong.NewClient(clientName)
@@ -68,7 +68,6 @@ func main() {
 				}
 
 				branchName, err := gong.Start(client, branchType, issueId)
-
 				if err != nil {
 					color.Red("Problem with starting the issue")
 				}
