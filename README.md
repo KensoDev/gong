@@ -88,11 +88,11 @@ This will add a link to the issue to every commit. Whether you do `git commit "c
 ### Install commit hooks on your repository 
 
 ```
-curl https://raw.githubusercontent.com/KensoDev/gong/develop/git-hooks/prepare-commit-msg > .git/hooks/prepare-commit-message
-chmod +x .git/hooks/prepare-commit-message
+curl https://raw.githubusercontent.com/KensoDev/gong/develop/git-hooks/prepare-commit-msg > .git/hooks/prepare-commit-msg
+chmod +x .git/hooks/prepare-commit-msg
 
-curl https://raw.githubusercontent.com/KensoDev/gong/develop/git-hooks/commit-msg > .git/hooks/commit-message
-chmod +x .git/hooks/commit-message
+curl https://raw.githubusercontent.com/KensoDev/gong/develop/git-hooks/commit-msg > .git/hooks/commit-msg
+chmod +x .git/hooks/commit-msg
 ```
 
 ## Issues/Feedback
