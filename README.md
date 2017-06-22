@@ -110,6 +110,14 @@ branch and you cn start working on your ticket.
 
 If you have any issues, please open one here on Github or hit me up on twitter [@KensoDev](https://twitter.com/KensoDev)
 
+## CHANGELOG
+
+### 1.3.4
+
+* Added the `create` command. Opens up the browser on the create ticket URL for
+  the specific issue tracker
+
+
 ## Upcoming features
 
 ### `gong slack`
