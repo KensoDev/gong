@@ -2,6 +2,8 @@
 
 <img src="http://assets.avi.io/logo.svg" width="300" />
 
+![Build Status](https://travis-ci.org/KensoDev/gong.svg?branch=develop)
+
 ## Summary
 
 Gong is a CLI to make working with an issue tracker (look at the supported clients) and still keeping your flow going in the terminal.
