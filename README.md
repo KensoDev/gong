@@ -2,7 +2,10 @@
 
 <img src="http://assets.avi.io/logo.svg" width="300" />
 
-![Build Status](https://travis-ci.org/KensoDev/gong.svg?branch=develop)
+### Build Status 
+
+* Develop: ![Build Status](https://travis-ci.org/KensoDev/gong.svg?branch=develop)
+* Master : ![Build Status](https://travis-ci.org/KensoDev/gong.svg?branch=master)
 
 ## Summary
 
