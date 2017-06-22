@@ -114,3 +114,4 @@ Send a message to a slack channel, tagging the issue you are working on
 ### `gong next/pick`
 
 Show you the next items on your backlog, be able to start one without opening the browser
+
