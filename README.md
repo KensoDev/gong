@@ -2,6 +2,11 @@
 
 <img src="http://assets.avi.io/logo.svg" width="300" />
 
+### Build Status 
+
+* Develop: ![Build Status](https://travis-ci.org/KensoDev/gong.svg?branch=develop)
+* Master : ![Build Status](https://travis-ci.org/KensoDev/gong.svg?branch=master)
+
 ## Summary
 
 Gong is a CLI to make working with an issue tracker (look at the supported clients) and still keeping your flow going in the terminal.
@@ -88,16 +93,30 @@ This will add a link to the issue to every commit. Whether you do `git commit "c
 ### Install commit hooks on your repository 
 
 ```
-curl https://raw.githubusercontent.com/KensoDev/gong/develop/git-hooks/prepare-commit-msg > .git/hooks/prepare-commit-message
-chmod +x .git/hooks/prepare-commit-message
+curl https://raw.githubusercontent.com/KensoDev/gong/develop/git-hooks/prepare-commit-msg > .git/hooks/prepare-commit-msg
+chmod +x .git/hooks/prepare-commit-msg
 
-curl https://raw.githubusercontent.com/KensoDev/gong/develop/git-hooks/commit-msg > .git/hooks/commit-message
-chmod +x .git/hooks/commit-message
+curl https://raw.githubusercontent.com/KensoDev/gong/develop/git-hooks/commit-msg > .git/hooks/commit-msg
+chmod +x .git/hooks/commit-msg
 ```
+
+### `gong create`
+
+Gong create will open the browser on the issue tracker create ticket flow. You
+can then copy over the issue-id and run `gong start` which will create the
+branch and you cn start working on your ticket.
 
 ## Issues/Feedback
 
 If you have any issues, please open one here on Github or hit me up on twitter [@KensoDev](https://twitter.com/KensoDev)
+
+## CHANGELOG
+
+### 1.3.4
+
+* Added the `create` command. Opens up the browser on the create ticket URL for
+  the specific issue tracker
+
 
 ## Upcoming features
 
@@ -105,11 +124,7 @@ If you have any issues, please open one here on Github or hit me up on twitter [
 
 Send a message to a slack channel, tagging the issue you are working on
 
-### `gong create`
-
-Create a ticket, automatically giving you an id and starting to work on the
-issue.
-
 ### `gong next/pick`
 
 Show you the next items on your backlog, be able to start one without opening the browser
+

@@ -13,7 +13,7 @@ import (
 
 func main() {
 	app := cli.NewApp()
-	app.Version = "v1.3.3"
+	app.Version = "1.3.4"
 
 	var branchType string
 
@@ -205,6 +205,32 @@ func main() {
 				return nil
 			},
 		},
+		{
+			Name:  "create",
+			Usage: "Open the browser on the create ticket page",
+			Action: func(c *cli.Context) error {
+				client, err := gong.NewAuthenticatedClient()
+
+				if err != nil {
+					color.Red("Problem starting a client")
+					return err
+				}
+
+				url, err := gong.Create(client)
+
+				if err != nil {
+					color.Red(err.Error())
+					return err
+				}
+
+				cmd := "open"
+				args := []string{url}
+
+				_, _ = exec.Command(cmd, args...).Output()
+				return nil
+			},
+		},
 	}
+
 	app.Run(os.Args)
 }
