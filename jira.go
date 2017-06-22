@@ -14,6 +14,16 @@ type JiraClient struct {
 	config map[string]string
 }
 
+func (j *JiraClient) Create() (string, error) {
+	domain, err := j.GetDomain()
+
+	if err != nil {
+		return "", err
+	}
+
+	return domain, nil
+}
+
 // NewJiraClient : Returns a pointer to JiraClient
 func NewJiraClient() *JiraClient {
 	return &JiraClient{}
@@ -64,14 +74,25 @@ func (j *JiraClient) Comment(branchName, comment string) error {
 	return err
 }
 
-// Browse : Browse to the URL of the issue related to the branch name
-func (j *JiraClient) Browse(branchName string) (string, error) {
-	issueID := GetIssueID(branchName)
+func (j *JiraClient) GetDomain() (string, error) {
 
 	domain, ok := j.config["domain"]
 
 	if !ok {
 		return "", errors.New("Could not locate domain in config")
+	}
+
+	return domain, nil
+}
+
+// Browse : Browse to the URL of the issue related to the branch name
+func (j *JiraClient) Browse(branchName string) (string, error) {
+	issueID := GetIssueID(branchName)
+
+	domain, err := j.GetDomain()
+
+	if err != nil {
+		return "", err
 	}
 
 	if issueID == "" {

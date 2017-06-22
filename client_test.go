@@ -46,6 +46,10 @@ func (f *FakeClient) PrepareCommitMessage(branchName, commitMessage string) stri
 	return "Fake commit message"
 }
 
+func (f *FakeClient) Create() (string, error) {
+	return "This is the URL", nil
+}
+
 func (s *ClientSuite) TestClientStartIssue(c *C) {
 	client := &FakeClient{}
 	branchName, _ := Start(client, "feature", "111")
@@ -73,4 +77,10 @@ func (s *ClientSuite) TestPrepareCommitMessage(c *C) {
 	commitMessage := "This is a sample comment"
 	newMessage := PrepareCommitMessage(client, branchName, commitMessage)
 	c.Assert(newMessage, Equals, "Fake commit message")
+}
+
+func (s *ClientSuite) TestCreate(c *C) {
+	client := &FakeClient{}
+	url, _ := Create(client)
+	c.Assert(url, Equals, "This is the URL")
 }
