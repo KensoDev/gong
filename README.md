@@ -95,6 +95,12 @@ curl https://raw.githubusercontent.com/KensoDev/gong/develop/git-hooks/commit-ms
 chmod +x .git/hooks/commit-msg
 ```
 
+### `gong create`
+
+Gong create will open the browser on the issue tracker create ticket flow. You
+can then copy over the issue-id and run `gong start` which will create the
+branch and you cn start working on your ticket.
+
 ## Issues/Feedback
 
 If you have any issues, please open one here on Github or hit me up on twitter [@KensoDev](https://twitter.com/KensoDev)
@@ -104,11 +110,6 @@ If you have any issues, please open one here on Github or hit me up on twitter [
 ### `gong slack`
 
 Send a message to a slack channel, tagging the issue you are working on
-
-### `gong create`
-
-Create a ticket, automatically giving you an id and starting to work on the
-issue.
 
 ### `gong next/pick`
 
