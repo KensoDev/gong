@@ -6,8 +6,8 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/KensoDev/gong"
 	"github.com/fatih/color"
-	"github.com/kensodev/gong"
 	"github.com/urfave/cli"
 )
 
