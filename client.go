@@ -30,7 +30,7 @@ func Create(client Client) (string, error) {
 func PrepareCommitMessage(client Client, branchName, commitMessage string) string {
 	return client.PrepareCommitMessage(branchName, commitMessage)
 }
-
+	
 // Comment : Comment on an issue
 func Comment(client Client, branchName, comment string) error {
 	return client.Comment(branchName, comment)
@@ -52,9 +52,13 @@ func NewClient(clientName string) (Client, error) {
 		return NewJiraClient(), nil
 	}
 
+	if clientName == "pivotal" {
+		return NewPivotalClient(), nil
+	}
+
 	return nil, fmt.Errorf("Could not find client: %v", clientName)
 }
-
+	
 // NewAuthenticatedClient : Return a new client authenticated
 func NewAuthenticatedClient() (Client, error) {
 	fields, err := Load()
