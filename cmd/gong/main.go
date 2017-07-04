@@ -6,21 +6,21 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/KensoDev/gong"
 	"github.com/fatih/color"
-	"github.com/kensodev/gong"
 	"github.com/urfave/cli"
 )
 
 func main() {
 	app := cli.NewApp()
-	app.Version = "1.3.4"
+	app.Version = "1.4.0"
 
 	var branchType string
 
 	app.Commands = []cli.Command{
 		{
 			Name:  "login",
-			Usage: "Login to your Jira Instance",
+			Usage: "Login to your project managment tool instance",
 			Action: func(c *cli.Context) error {
 				clientName := c.Args()[0]
 				client, err := gong.NewClient(clientName)
@@ -68,7 +68,6 @@ func main() {
 				}
 
 				branchName, err := gong.Start(client, branchType, issueId)
-
 				if err != nil {
 					color.Red("Problem with starting the issue")
 				}
