@@ -112,6 +112,12 @@ If you have any issues, please open one here on Github or hit me up on twitter [
 
 ## CHANGELOG
 
+
+## 1.4.0
+
+* Added the pivotal tracker client. Thanks to [@stephensxu](http://github.com/stephensxu).
+  In order to create the client and connect to pivotal tracker, you run `gong login pivotal`
+
 ### 1.3.4
 
 * Added the `create` command. Opens up the browser on the create ticket URL for
