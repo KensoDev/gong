@@ -22,6 +22,10 @@ func main() {
 			Name:  "login",
 			Usage: "Login to your project managment tool instance",
 			Action: func(c *cli.Context) error {
+				if c.NArg() == 0 {
+					color.Red("You have to pass in a client name as an argument")
+					return nil
+				}
 				clientName := c.Args()[0]
 				client, err := gong.NewClient(clientName)
 
