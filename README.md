@@ -78,7 +78,7 @@ What I find most useful is to send diffs, files, buffers from vim and more.
 
 With this approach, I find I write much better comments to tickets. You will do the same :)
 
-![asciicast](https://asciinema.org/a/d0rcjavbv55lbq1xpsrqiyyu6.png)](https://asciinema.org/a/d0rcjavbv55lbq1xpsrqiyyu6)
+[!asciicast](https://asciinema.org/a/d0rcjavbv55lbq1xpsrqiyyu6.png)](https://asciinema.org/a/d0rcjavbv55lbq1xpsrqiyyu6)
 
 ### `gong prepare-commit-message`
 
