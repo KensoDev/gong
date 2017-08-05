@@ -174,8 +174,8 @@ func (j *JiraClient) FormatField(fieldName string, value string) string {
 // GetAuthFields : Get a map of auth fields
 func (j *JiraClient) GetAuthFields() map[string]bool {
 	return map[string]bool{
-		"username":       true,
-		"domain":         true,
+		"username":       false,
+		"domain":         false,
 		"password":       true,
 		"project_prefix": false,
 		"transitions":    false,
