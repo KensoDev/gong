@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
+	"strings"
 
 	"github.com/andygrunwald/go-jira"
 )
@@ -127,11 +128,12 @@ func indexOf(status string, data []string) int {
 
 // Start : Start an issue
 func (j *JiraClient) Start(issueType string, issueID string) (string, error) {
-	allowed := []string{"Ready", "Start"}
+	allowed := strings.Split(j.config["transitions"], ",")
 
 	fmt.Println(issueID)
 
 	transitions, response, err := j.client.Issue.GetTransitions(issueID)
+	fmt.Println(transitions)
 
 	if err != nil {
 		fmt.Println(err)
@@ -176,6 +178,7 @@ func (j *JiraClient) GetAuthFields() map[string]bool {
 		"domain":         true,
 		"password":       true,
 		"project_prefix": false,
+		"transitions":    false,
 	}
 }
 
