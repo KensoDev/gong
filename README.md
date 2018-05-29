@@ -39,7 +39,7 @@ In order to use `gong` you first you need to login.
 
 `gong login {client-name}`
 
-Each of the supported clients will prompt the required fields in order to login to the system. Jira will need username, pass and a couple more while others might only need an API token.
+Each of the supported clients will prompt the required fields in order to login to the system. Jira will need username, password, domain (without the https://) scheme while others might only need an API token.
 
 Once you input all of the details the client will attempt to login. If succeeded it will let you know.
 
