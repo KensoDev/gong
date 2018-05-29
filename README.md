@@ -112,6 +112,10 @@ If you have any issues, please open one here on Github or hit me up on twitter [
 
 ## CHANGELOG
 
+## 1.6.0
+
+* Added transitions to the config and outputting the transitions to STDout to
+  verify the config.
 
 ## 1.4.0
 
