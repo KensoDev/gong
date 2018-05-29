@@ -120,7 +120,7 @@ func Login(client Client) (bool, error) {
 		return true, nil
 	}
 
-	return false, fmt.Errorf("Cloud not login")
+	return false, fmt.Errorf("Could not login")
 }
 
 func getUserHomeOrDefault() string {
