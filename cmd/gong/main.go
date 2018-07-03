@@ -6,7 +6,7 @@ import (
 	"os"
 	"os/exec"
 
-	"gong"
+	"github.com/KensoDev/gong"
 	"github.com/fatih/color"
 	"github.com/urfave/cli"
 )
@@ -74,7 +74,6 @@ func main() {
 				branchName, err := gong.Start(client, branchType, issueId)
 				if err != nil {
 					color.Red("Problem with starting the issue")
-					fmt.Println(err)
 				}
 
 				cmd := "git"
