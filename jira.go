@@ -201,7 +201,7 @@ func (j *JiraClient) Authenticate(fields map[string]string) bool {
 	j.branch, err = NewBranch(fields)
 
 	if err != nil {
-        fmt.Println(err)
+		fmt.Println(err)
 		return false
 	}
 

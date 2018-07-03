@@ -180,7 +180,7 @@ func (p *PivotalClient) Authenticate(fields map[string]string) bool {
 	p.branch, err = NewBranch(fields)
 
 	if err != nil {
-        fmt.Println(err)
+		fmt.Println(err)
 		return false
 	}
 
