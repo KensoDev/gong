@@ -13,6 +13,7 @@ import (
 type JiraClient struct {
 	client *jira.Client
 	config map[string]string
+	branch Branch
 }
 
 func (j *JiraClient) Create() (string, error) {
@@ -113,8 +114,7 @@ func (j *JiraClient) GetBranchName(issueType string, issueID string) (string, er
 		return "", err
 	}
 
-	issueTitleSlug := SlugifyTitle(issue.Fields.Summary)
-	return fmt.Sprintf("%s/%s-%s", issueType, issueID, issueTitleSlug), nil
+	return j.branch.Name(issueType, issueID, issue.Fields.Summary)
 }
 
 func indexOf(status string, data []string) int {
@@ -198,6 +198,12 @@ func (j *JiraClient) Authenticate(fields map[string]string) bool {
 
 	j.client = jiraClient
 	j.config = fields
+	j.branch, err = NewBranch(fields)
+
+	if err != nil {
+        fmt.Println(err)
+		return false
+	}
 
 	return true
 }

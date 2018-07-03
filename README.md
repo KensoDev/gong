@@ -45,6 +45,20 @@ Once you input all of the details the client will attempt to login. If succeeded
 
 [![asciicast](https://asciinema.org/a/dcko3kv5xwobpf4rgj0e4ulyo.png)](https://asciinema.org/a/dcko3kv5xwobpf4rgj0e4ulyo)
 
+### Configuration
+
+It is possible to add the following options to your `~/.gong.json`:
+```json
+"branch_replacement_character": "_"
+```
+Replace any illegal characters in a branch name with the provided character.  
+By default `-` is used
+```json
+"branch_pattern": "{{.IssueID}}/{{.IssueTitle}}"
+```
+Use this pattern to create the branch name from the issue, accept `{{.IssueID}}`, `{{.IssueTitle}}` and `{{.IssueType}}`. `{{.IssueID}}` and `{{.IssueTitle}}` are mandatory.  
+By default `{{.IssueType}}/{{.IssueID}}-{{.IssueTitle}}` is used
+
 ### Start working on an issue
 
 `gong start {issue-id} --type feature`
@@ -54,7 +68,7 @@ issue id and what type of work is this (defaults to feature).
 
 This will do a couple of things
 
-1. Create a branch name `{type}/{issue-id}-{issue-title-sluggified}`
+1. Create a branch name, by default: `{type}/{issue-id}-{issue-title-sluggified}`
 2. Transition the issue to a started state
 
 [![asciicast](https://asciinema.org/a/c5libsysjmb5f8f8gizkbldzv.png)](https://asciinema.org/a/c5libsysjmb5f8f8gizkbldzv)

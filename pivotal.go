@@ -2,15 +2,17 @@ package gong
 
 import (
 	"fmt"
-	"gopkg.in/salsita/go-pivotaltracker.v1/v5/pivotal"
-	"strconv"
 	"regexp"
+	"strconv"
+
+	"gopkg.in/salsita/go-pivotaltracker.v1/v5/pivotal"
 )
 
 // PivotalClient : Struct implementing the generic Client interface
 type PivotalClient struct {
 	client *pivotal.Client
 	config map[string]string
+	branch Branch
 }
 
 // NewPivotalClient : Returns a pointer to PivotalClient
@@ -20,7 +22,7 @@ func NewPivotalClient() *PivotalClient {
 
 func (p *PivotalClient) Create() (string, error) {
 	fields, err := Load()
-	
+
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -134,9 +136,7 @@ func (p *PivotalClient) GetBranchName(issueType string, issueID string) (string,
 		fmt.Println(err)
 	}
 
-	issueTitleSlug := SlugifyTitle(story.Name)
-
-	return fmt.Sprintf("%s/%s-%s", issueType, issueID, issueTitleSlug), nil
+	return p.branch.Name(issueType, issueID, story.Name)
 }
 
 func (p *PivotalClient) GetProjectIdAndIssueId(issueID string) (int, int, error) {
@@ -177,6 +177,12 @@ func (p *PivotalClient) Authenticate(fields map[string]string) bool {
 
 	p.client = pivotalClient
 	p.config = fields
+	p.branch, err = NewBranch(fields)
+
+	if err != nil {
+        fmt.Println(err)
+		return false
+	}
 
 	return true
 }
