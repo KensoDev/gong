@@ -15,6 +15,7 @@ type JiraClient struct {
 	config map[string]string
 }
 
+// Create will create a new client
 func (j *JiraClient) Create() (string, error) {
 	domain, err := j.GetDomain()
 
@@ -63,9 +64,7 @@ func GetIssueID(branchName string) string {
 
 // Comment : Post a comment on a jira issue
 func (j *JiraClient) Comment(branchName, comment string) error {
-	fmt.Println(branchName)
 	issueID := GetIssueID(branchName)
-	fmt.Println(issueID)
 
 	jiraComment := &jira.Comment{
 		Body: comment,
@@ -75,6 +74,7 @@ func (j *JiraClient) Comment(branchName, comment string) error {
 	return err
 }
 
+// GetDomain : Get the domain from the config
 func (j *JiraClient) GetDomain() (string, error) {
 
 	domain, ok := j.config["domain"]
@@ -130,27 +130,18 @@ func indexOf(status string, data []string) int {
 func (j *JiraClient) Start(issueType string, issueID string) (string, error) {
 	allowed := strings.Split(j.config["transitions"], ",")
 
-	fmt.Println(issueID)
-
 	transitions, response, err := j.client.Issue.GetTransitions(issueID)
-	fmt.Println(transitions)
 
-	if err != nil {
-		fmt.Println(err)
-		fmt.Println(response.Body)
-		return "", err
-	}
+	for _, transition := range transitions {
+		if indexOf(transition.Name, allowed) > -1 {
+			_, err := j.client.Issue.DoTransition(issueID, transition.ID)
 
-	nextTransition := transitions[0]
-
-	if indexOf(nextTransition.Name, allowed) > -1 {
-		_, err := j.client.Issue.DoTransition(issueID, nextTransition.ID)
-
-		if err != nil {
-			return "", err
+			if err != nil {
+				fmt.Println(err)
+				fmt.Println(response.Body)
+				return "", err
+			}
 		}
-
-		_, _ = j.Start(issueType, issueID)
 	}
 
 	branchName, err := j.GetBranchName(issueType, issueID)
@@ -167,7 +158,6 @@ func (j *JiraClient) FormatField(fieldName string, value string) string {
 	if fieldName == "domain" {
 		return fmt.Sprintf("https://%s", value)
 	}
-
 	return value
 }
 
@@ -184,15 +174,14 @@ func (j *JiraClient) GetAuthFields() map[string]bool {
 
 // Authenticate : Authenticates using the fields passed in
 func (j *JiraClient) Authenticate(fields map[string]string) bool {
-	jiraClient, err := jira.NewClient(nil, fields["domain"])
-
-	if err != nil {
-		return false
+	tp := jira.BasicAuthTransport{
+		Username: fields["username"],
+		Password: fields["password"],
 	}
 
-	res, err := jiraClient.Authentication.AcquireSessionCookie(fields["username"], fields["password"])
+	jiraClient, err := jira.NewClient(tp.Client(), fields["domain"])
 
-	if err != nil || res == false {
+	if err != nil {
 		return false
 	}
 

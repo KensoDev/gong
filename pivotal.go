@@ -3,8 +3,8 @@ package gong
 import (
 	"fmt"
 	"gopkg.in/salsita/go-pivotaltracker.v1/v5/pivotal"
-	"strconv"
 	"regexp"
+	"strconv"
 )
 
 // PivotalClient : Struct implementing the generic Client interface
@@ -20,7 +20,7 @@ func NewPivotalClient() *PivotalClient {
 
 func (p *PivotalClient) Create() (string, error) {
 	fields, err := Load()
-	
+
 	if err != nil {
 		fmt.Println(err)
 	}
