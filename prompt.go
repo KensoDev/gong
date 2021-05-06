@@ -1,3 +1,4 @@
+// source: https://github.com/segmentio/go-prompt
 package gong
 
 import (
