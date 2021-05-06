@@ -2,6 +2,29 @@
 
 <img src="http://assets.avi.io/logo.svg" width="300" />
 
+- [Gong](#gong)
+    - [Build Status](#build-status)
+  - [Summary](#summary)
+  - [Usage](#usage)
+    - [Installation](#installation)
+    - [Currently supported clients](#currently-supported-clients)
+    - [Login](#login)
+    - [Start working on an issue](#start-working-on-an-issue)
+    - [`gong browse`](#gong-browse)
+    - [`gong comment`](#gong-comment)
+    - [Why a pipe?](#why-a-pipe)
+    - [`gong prepare-commit-message`](#gong-prepare-commit-message)
+    - [Install commit hooks on your repository](#install-commit-hooks-on-your-repository)
+    - [`gong create`](#gong-create)
+  - [Issues/Feedback](#issuesfeedback)
+  - [CHANGELOG](#changelog)
+  - [1.6.0](#160)
+  - [1.4.0](#140)
+    - [1.3.4](#134)
+  - [Upcoming features](#upcoming-features)
+    - [`gong slack`](#gong-slack)
+    - [`gong next/pick`](#gong-nextpick)
+  - [Development](#development)
 ### Build Status 
 
 * Develop: ![Build Status](https://travis-ci.org/KensoDev/gong.svg?branch=develop)
@@ -45,6 +68,20 @@ Once you input all of the details the client will attempt to login. If succeeded
 
 [![asciicast](https://asciinema.org/a/dcko3kv5xwobpf4rgj0e4ulyo.png)](https://asciinema.org/a/dcko3kv5xwobpf4rgj0e4ulyo)
 
+You can also define `~/.gong.json`:
+
+    {
+      "client":"jira",
+      "domain":"<JIRA_DOMAIN>",
+      "password":"<JIRA_API_TOKEN>",
+      "project_prefix":"<PROJECT_PREFIX>",
+      "transitions":"In Progress",
+      "username":"<JIRA_EMAIL>"
+    }
+
+NOTE:
+For Passowrd get an API Token.
+https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/
 ### Start working on an issue
 
 `gong start {issue-id} --type feature`
@@ -59,6 +96,10 @@ This will do a couple of things
 
 [![asciicast](https://asciinema.org/a/c5libsysjmb5f8f8gizkbldzv.png)](https://asciinema.org/a/c5libsysjmb5f8f8gizkbldzv)
 
+NOTE:
+You can define a default (branch) type with env var:
+
+    echo "export GONG_DEFAULT_BRANCH_TYPE=story" >> ~/.zshrc
 ### `gong browse`
 
 While working on a branch that matches the gong regular expression (look
@@ -137,4 +178,19 @@ Send a message to a slack channel, tagging the issue you are working on
 ### `gong next/pick`
 
 Show you the next items on your backlog, be able to start one without opening the browser
+
+## Development
+Update version:
+
+    go get
+
+Build:
+
+    cd cmd/gong/
+    ./build.sh
+
+Add gong to your PATH and restart SEHLL, e.g.:
+
+    mv gong /usr/local/bin/gong
+    exec $SHELL
 
