@@ -3,7 +3,6 @@ package gong
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/segmentio/go-prompt"
 	"io/ioutil"
 	"os/user"
 	"path/filepath"
@@ -94,9 +93,9 @@ func Login(client Client) (bool, error) {
 		message := fmt.Sprintf("Please enter your %v %v", clientName, k)
 		promptValue := ""
 		if v {
-			promptValue = prompt.PasswordMasked(message)
+			promptValue = PromptPasswordMasked(message)
 		} else {
-			promptValue = prompt.String(message)
+			promptValue = PromptString(message)
 		}
 
 		fields[k] = client.FormatField(k, promptValue)
