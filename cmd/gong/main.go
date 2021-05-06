@@ -51,7 +51,7 @@ func main() {
 					Value:       "feature",
 					Usage:       "Type of branch to create eg: feature/{ticket-id}-ticket-title",
 					Destination: &branchType,
-					EnvVar: "GONG_DEFAULT_BRANCH_TYPE"
+					EnvVar: "GONG_DEFAULT_BRANCH_TYPE",
 				},
 			},
 			Action: func(c *cli.Context) error {
