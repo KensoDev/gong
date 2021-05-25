@@ -133,13 +133,13 @@ This will add a link to the issue to every commit. Whether you do `git commit "c
 
 ### Install commit hooks on your repository 
 
-```
-curl https://raw.githubusercontent.com/KensoDev/gong/develop/git-hooks/prepare-commit-msg > .git/hooks/prepare-commit-msg
-chmod +x .git/hooks/prepare-commit-msg
+    mkdir ~/.githooks
+    git config --global core.hooksPath ~/.githooks
+    curl https://raw.githubusercontent.com/KensoDev/gong/develop/git-hooks/prepare-commit-msg > ~/.githooks/prepare-commit-msg
+    chmod +x .git/hooks/prepare-commit-msg
 
-curl https://raw.githubusercontent.com/KensoDev/gong/develop/git-hooks/commit-msg > .git/hooks/commit-msg
-chmod +x .git/hooks/commit-msg
-```
+    curl https://raw.githubusercontent.com/KensoDev/gong/develop/git-hooks/commit-msg > ~/.githooks/commit-msg
+    chmod +x .git/hooks/commit-msg
 
 ### `gong create`
 
