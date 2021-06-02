@@ -1,6 +1,18 @@
 #!/bin/sh
 #
 # Automatically adds branch name and branch description to every commit message.
-#
-
-echo "$1\n\n$(cat $1 | gong prepare-commit-message)"
+# To avoid duplictaes: git commit --ammend --no-verify
+# Source: https://medium.com/@nicklee1/prepending-your-git-commit-messages-with-user-story-ids-3bfea00eab5a
+if [ -z "$BRANCHES_TO_SKIP" ]; then
+  BRANCHES_TO_SKIP=(master develop staging test)
+fi
+# Get the current branch name and check if it is excluded
+BRANCH_NAME=$(git symbolic-ref --short HEAD)
+BRANCH_EXCLUDED=$(printf "%s\n" "${BRANCHES_TO_SKIP[@]}" | grep -c "^$BRANCH_NAME$")
+# Trim it down to get the parts we're interested in
+# TRIMMED=$(echo $BRANCH_NAME | sed -e 's:^\([^-]*-[^-]*\)-.*:\1:' -e \
+#     'y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/')
+# If it isn't excluded, preprend the trimmed branch identifier to the given message
+if [ -n "$BRANCH_NAME" ] &&  ! [[ $BRANCH_EXCLUDED -eq 1 ]]; then
+  echo "$(cat $1)\n\n$(cat $1 | gong prepare-commit-message)" > $1
+fi

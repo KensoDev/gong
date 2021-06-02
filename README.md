@@ -13,8 +13,10 @@
     - [`gong browse`](#gong-browse)
     - [`gong comment`](#gong-comment)
     - [Why a pipe?](#why-a-pipe)
-    - [`gong prepare-commit-message`](#gong-prepare-commit-message)
-    - [Install commit hooks on your repository](#install-commit-hooks-on-your-repository)
+    - [githooks](#githooks)
+      - [`gong prepare-commit-message`](#gong-prepare-commit-message)
+      - [`commit-msg`](#commit-msg)
+      - [Install commit hooks on your repository](#install-commit-hooks-on-your-repository)
     - [`gong create`](#gong-create)
   - [Issues/Feedback](#issuesfeedback)
   - [CHANGELOG](#changelog)
@@ -121,7 +123,9 @@ With this approach, I find I write much better comments to tickets. You will do 
 
 ![asciicast](https://asciinema.org/a/d0rcjavbv55lbq1xpsrqiyyu6.png)](https://asciinema.org/a/d0rcjavbv55lbq1xpsrqiyyu6)
 
-### `gong prepare-commit-message`
+### githooks
+
+#### `gong prepare-commit-message`
 
 This is **not** meant to be used directly, instead it is meant to be wrapped with simple wrapper git hooks.
 
@@ -131,7 +135,16 @@ All you need to do is to copy them into your `.git/hooks` directory.
 
 This will add a link to the issue to every commit. Whether you do `git commit "commit message" or edit the commit message using the editor with `git commit`
 
-### Install commit hooks on your repository 
+#### `commit-msg`
+
+This githook will produce duplicate Jira links if using `git commit --ammend`
+You can add an alias to skip this hook and avoid duplication:
+
+    alias git-commit-ammend="git commit --amend --no-edit --no-verify"
+
+
+
+#### Install commit hooks on your repository 
 
     mkdir ~/.githooks
     git config --global core.hooksPath ~/.githooks
