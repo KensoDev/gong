@@ -2,60 +2,98 @@
   <!-- Background Circle -->
   <circle cx="200" cy="200" r="190" fill="#1A1A2E" opacity="0.9"/>
 
-  <!-- Gong/Bell Shape - Main Body -->
-  <path d="M 200 80 Q 140 100 130 160 Q 125 190 130 220 L 270 220 Q 275 190 270 160 Q 260 100 200 80 Z"
-        fill="url(#goldGradient)"
-        stroke="#FFD700"
-        stroke-width="3"/>
+  <!-- Gong Frame - Top curved bar -->
+  <path d="M 80 100 Q 200 60 320 100"
+        stroke="#2C2C3E"
+        stroke-width="8"
+        fill="none"
+        stroke-linecap="round"/>
 
-  <!-- Gong/Bell Shape - Shine Effect -->
-  <ellipse cx="170" cy="140" rx="25" ry="35" fill="white" opacity="0.3"/>
+  <!-- Gong Frame - Left support -->
+  <rect x="76" y="100" width="8" height="140" fill="#2C2C3E" rx="4"/>
 
-  <!-- Bell Bottom Rim -->
-  <ellipse cx="200" cy="220" rx="70" ry="12" fill="#B8860B" opacity="0.8"/>
+  <!-- Gong Frame - Right support -->
+  <rect x="316" y="100" width="8" height="140" fill="#2C2C3E" rx="4"/>
 
-  <!-- Concentric Circles - Ripple Effect (sound waves) -->
-  <circle cx="200" cy="200" r="100" stroke="#4ECDC4" stroke-width="3" fill="none" opacity="0.6">
-    <animate attributeName="r" from="100" to="150" dur="2s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" from="0.6" to="0" dur="2s" repeatCount="indefinite"/>
+  <!-- Gong Frame - Base -->
+  <rect x="70" y="235" width="260" height="12" fill="#2C2C3E" rx="6"/>
+
+  <!-- Suspension Chains/Strings - Left -->
+  <line x1="165" y1="95" x2="175" y2="145" stroke="#8B7355" stroke-width="2"/>
+  <line x1="165" y1="95" x2="167" y2="100" stroke="#8B7355" stroke-width="3"/>
+
+  <!-- Suspension Chains/Strings - Right -->
+  <line x1="235" y1="95" x2="225" y2="145" stroke="#8B7355" stroke-width="2"/>
+  <line x1="235" y1="95" x2="233" y2="100" stroke="#8B7355" stroke-width="3"/>
+
+  <!-- Main Gong Disc - Outer rim -->
+  <circle cx="200" cy="170" r="68"
+          fill="url(#goldGradient)"
+          stroke="#B8860B"
+          stroke-width="3"/>
+
+  <!-- Gong Disc - Concentric circles (texture) -->
+  <circle cx="200" cy="170" r="60" stroke="#DAA520" stroke-width="0.5" fill="none" opacity="0.4"/>
+  <circle cx="200" cy="170" r="50" stroke="#DAA520" stroke-width="0.5" fill="none" opacity="0.4"/>
+  <circle cx="200" cy="170" r="40" stroke="#DAA520" stroke-width="0.5" fill="none" opacity="0.4"/>
+  <circle cx="200" cy="170" r="30" stroke="#DAA520" stroke-width="0.5" fill="none" opacity="0.4"/>
+  <circle cx="200" cy="170" r="20" stroke="#DAA520" stroke-width="0.5" fill="none" opacity="0.4"/>
+
+  <!-- Gong Disc - Center boss (raised bump) -->
+  <circle cx="200" cy="170" r="15" fill="#B8860B" opacity="0.6"/>
+  <circle cx="200" cy="170" r="12" fill="#DAA520" opacity="0.8"/>
+
+  <!-- Shine/Highlight -->
+  <ellipse cx="175" cy="150" rx="20" ry="25" fill="white" opacity="0.2"/>
+  <ellipse cx="220" cy="175" rx="12" ry="15" fill="white" opacity="0.15"/>
+
+  <!-- Sound Waves - Animated ripples -->
+  <circle cx="200" cy="170" r="80" stroke="#4ECDC4" stroke-width="2.5" fill="none" opacity="0.6">
+    <animate attributeName="r" from="80" to="140" dur="2.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" from="0.6" to="0" dur="2.5s" repeatCount="indefinite"/>
   </circle>
 
-  <circle cx="200" cy="200" r="100" stroke="#4ECDC4" stroke-width="3" fill="none" opacity="0.6">
-    <animate attributeName="r" from="100" to="150" dur="2s" begin="0.5s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" from="0.6" to="0" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+  <circle cx="200" cy="170" r="80" stroke="#4ECDC4" stroke-width="2.5" fill="none" opacity="0.6">
+    <animate attributeName="r" from="80" to="140" dur="2.5s" begin="0.6s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" from="0.6" to="0" dur="2.5s" begin="0.6s" repeatCount="indefinite"/>
   </circle>
 
-  <circle cx="200" cy="200" r="100" stroke="#95E1D3" stroke-width="3" fill="none" opacity="0.6">
-    <animate attributeName="r" from="100" to="150" dur="2s" begin="1s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" from="0.6" to="0" dur="2s" begin="1s" repeatCount="indefinite"/>
+  <circle cx="200" cy="170" r="80" stroke="#95E1D3" stroke-width="2.5" fill="none" opacity="0.6">
+    <animate attributeName="r" from="80" to="140" dur="2.5s" begin="1.2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" from="0.6" to="0" dur="2.5s" begin="1.2s" repeatCount="indefinite"/>
   </circle>
 
-  <!-- Git Branch Icon Integration -->
-  <g transform="translate(160, 180)" opacity="0.9">
-    <circle cx="0" cy="0" r="8" fill="#FF6B6B"/>
-    <line x1="0" y1="8" x2="0" y2="35" stroke="#FF6B6B" stroke-width="3"/>
-    <circle cx="0" cy="35" r="8" fill="#FF6B6B"/>
+  <circle cx="200" cy="170" r="80" stroke="#95E1D3" stroke-width="2" fill="none" opacity="0.5">
+    <animate attributeName="r" from="80" to="140" dur="2.5s" begin="1.8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" from="0.5" to="0" dur="2.5s" begin="1.8s" repeatCount="indefinite"/>
+  </circle>
 
-    <line x1="0" y1="15" x2="30" y2="15" stroke="#4ECDC4" stroke-width="3"/>
-    <circle cx="30" cy="15" r="8" fill="#4ECDC4"/>
-    <line x1="30" y1="23" x2="30" y2="35" stroke="#4ECDC4" stroke-width="3"/>
+  <!-- Git Branch Icon (small, integrated) -->
+  <g transform="translate(145, 265)" opacity="0.85">
+    <circle cx="0" cy="0" r="6" fill="#FF6B6B"/>
+    <line x1="0" y1="6" x2="0" y2="24" stroke="#FF6B6B" stroke-width="2.5"/>
+    <circle cx="0" cy="24" r="6" fill="#FF6B6B"/>
+
+    <line x1="0" y1="10" x2="20" y2="10" stroke="#4ECDC4" stroke-width="2.5"/>
+    <circle cx="20" cy="10" r="6" fill="#4ECDC4"/>
+    <line x1="20" y1="16" x2="20" y2="24" stroke="#4ECDC4" stroke-width="2.5"/>
   </g>
 
   <!-- Text: GONG -->
-  <text x="200" y="310" font-family="Arial, sans-serif" font-size="48" font-weight="bold"
+  <text x="200" y="325" font-family="Arial, sans-serif" font-size="48" font-weight="bold"
         fill="url(#textGradient)" text-anchor="middle">GONG</text>
 
   <!-- Subtitle -->
-  <text x="200" y="340" font-family="Arial, sans-serif" font-size="14"
+  <text x="200" y="355" font-family="Arial, sans-serif" font-size="14"
         fill="#95E1D3" text-anchor="middle" opacity="0.8">Git + Issue Tracker Integration</text>
 
   <!-- Gradients -->
   <defs>
-    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+    <radialGradient id="goldGradient" cx="45%" cy="40%">
       <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#FFA500;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#DAA520;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
-    </linearGradient>
+    </radialGradient>
 
     <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" style="stop-color:#4ECDC4;stop-opacity:1" />
