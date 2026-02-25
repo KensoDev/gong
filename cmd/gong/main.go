@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"os/exec"
 
@@ -129,7 +129,7 @@ func main() {
 			Name:  "comment",
 			Usage: "Comment on the ticket for the branch you are working on",
 			Action: func(c *cli.Context) error {
-				bytes, err := ioutil.ReadAll(os.Stdin)
+				bytes, err := io.ReadAll(os.Stdin)
 
 				if err != nil {
 					color.Red("Could not read stdin")
@@ -190,7 +190,7 @@ func main() {
 				}
 
 				branchName := string(out)
-				bytes, err := ioutil.ReadAll(os.Stdin)
+				bytes, err := io.ReadAll(os.Stdin)
 
 				if err != nil {
 					color.Red("Could not read stdin")

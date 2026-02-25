@@ -1,6 +1,6 @@
 module github.com/KensoDev/gong
 
-go 1.19
+go 1.23
 
 require (
 	github.com/andygrunwald/go-jira v1.16.0
@@ -8,7 +8,6 @@ require (
 	github.com/segmentio/go-prompt v1.2.1-0.20161017233205-f0d19b6901ad
 	github.com/urfave/cli v1.22.12
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c
-	gopkg.in/salsita/go-pivotaltracker.v1 v1.5.0
 )
 
 require (

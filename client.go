@@ -3,10 +3,11 @@ package gong
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/segmentio/go-prompt"
-	"io/ioutil"
+	"os"
 	"os/user"
 	"path/filepath"
+
+	"github.com/segmentio/go-prompt"
 )
 
 // Client : Public interface for the generic client
@@ -50,10 +51,6 @@ func Start(client Client, issueType, issueID string) (string, error) {
 func NewClient(clientName string) (Client, error) {
 	if clientName == "jira" {
 		return NewJiraClient(), nil
-	}
-
-	if clientName == "pivotal" {
-		return NewPivotalClient(), nil
 	}
 
 	return nil, fmt.Errorf("Could not find client: %v", clientName)
@@ -143,7 +140,7 @@ func Load() (map[string]string, error) {
 	fileLocation := getFileLocation()
 	var c = map[string]string{}
 
-	file, err := ioutil.ReadFile(fileLocation)
+	file, err := os.ReadFile(fileLocation)
 
 	if err != nil {
 		return nil, err
@@ -167,7 +164,7 @@ func Save(values map[string]string) error {
 		return err
 	}
 
-	err = ioutil.WriteFile(fileLocation, loginDetails, 0644)
+	err = os.WriteFile(fileLocation, loginDetails, 0644)
 
 	if err != nil {
 		return err

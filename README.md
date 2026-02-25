@@ -1,37 +1,69 @@
 # Gong
 
-<img src="http://assets.avi.io/logo.svg" width="300" />
+<div align="center">
+  <img src="assets/logo.svg" width="300" alt="Gong Logo" />
+  <p><strong>A command-line tool for seamless Git and issue tracker integration</strong></p>
 
-### Build Status 
+  [![CI](https://github.com/KensoDev/gong/workflows/CI/badge.svg)](https://github.com/KensoDev/gong/actions)
+  [![Go Report Card](https://goreportcard.com/badge/github.com/KensoDev/gong)](https://goreportcard.com/report/github.com/KensoDev/gong)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+  [![Go Version](https://img.shields.io/github/go-mod/go-version/KensoDev/gong)](go.mod)
+  [![Release](https://img.shields.io/github/v/release/KensoDev/gong)](https://github.com/KensoDev/gong/releases)
+</div>
 
-* Develop: ![Build Status](https://travis-ci.org/KensoDev/gong.svg?branch=develop)
-* Master : ![Build Status](https://travis-ci.org/KensoDev/gong.svg?branch=master)
+---
 
-## Summary
+## Overview
 
-Gong is a CLI to make working with an issue tracker (look at the supported clients) and still keeping your flow going in the terminal.
+**Gong** is a CLI tool that bridges the gap between issue trackers and Git workflows. Stay in your terminal and maintain your development flow while working with Jira and other project management tools.
 
-You can easily start branches off of issues, comment and also link commits to the issue URL.
+**Key Features:**
+- Create Git branches directly from issue IDs with proper naming conventions
+- Automatically transition issues to "started" state
+- Comment on issues via stdin pipes (perfect for sending diffs or file contents)
+- Link commits to issues via Git hooks
+- Browse issues in your default browser from the command line
 
 ## Usage
 
-### Installation 
+## Installation
 
-Head over to the [Github releases](https://github.com/KensoDev/gong/releases).
-The latest releases all have executables for OSX and linux.
+### Pre-built Binaries
 
-I **did not** test gong on windows so if you want to build for windows and
-test, please let me know.
+Download the latest release from [GitHub Releases](https://github.com/KensoDev/gong/releases) for your platform:
 
-Once you download the latest release, put it in your `PATH` and you can now use
-`gong`
+- macOS (Darwin)
+- Linux
+- Windows (community tested)
 
+Place the binary in your `PATH` and make it executable:
 
-### Currently supported clients
+```bash
+# Example for macOS/Linux
+chmod +x gong
+sudo mv gong /usr/local/bin/
+```
 
-* Jira
+### From Source
 
-If you would like to contribute a different client, please feel free to submit a PR
+```bash
+go install github.com/KensoDev/gong/cmd/gong@latest
+```
+
+### Using Homebrew (macOS/Linux)
+
+```bash
+# Coming soon
+brew install gong
+```
+
+## Supported Issue Trackers
+
+| Tracker | Status | Notes |
+|---------|--------|-------|
+| Jira | ✅ Full support | Username/password or API token |
+
+**Want to add support for another tracker?** Contributions are welcome! The codebase uses a generic `Client` interface that makes adding new trackers straightforward.
 
 ### Login
 
@@ -90,13 +122,13 @@ All you need to do is to copy them into your `.git/hooks` directory.
 
 This will add a link to the issue to every commit. Whether you do `git commit "commit message" or edit the commit message using the editor with `git commit`
 
-### Install commit hooks on your repository 
+### Install commit hooks on your repository
 
-```
-curl https://raw.githubusercontent.com/KensoDev/gong/develop/git-hooks/prepare-commit-msg > .git/hooks/prepare-commit-msg
+```bash
+curl https://raw.githubusercontent.com/KensoDev/gong/main/git-hooks/prepare-commit-msg > .git/hooks/prepare-commit-msg
 chmod +x .git/hooks/prepare-commit-msg
 
-curl https://raw.githubusercontent.com/KensoDev/gong/develop/git-hooks/commit-msg > .git/hooks/commit-msg
+curl https://raw.githubusercontent.com/KensoDev/gong/main/git-hooks/commit-msg > .git/hooks/commit-msg
 chmod +x .git/hooks/commit-msg
 ```
 
@@ -110,31 +142,77 @@ branch and you cn start working on your ticket.
 
 If you have any issues, please open one here on Github or hit me up on twitter [@KensoDev](https://twitter.com/KensoDev)
 
-## CHANGELOG
+## Development
 
-## 1.6.0
+### Building from Source
 
-* Added transitions to the config and outputting the transitions to STDout to
-  verify the config.
+```bash
+# Clone the repository
+git clone https://github.com/KensoDev/gong.git
+cd gong
 
-## 1.4.0
+# Build the project
+make build
 
-* Added the pivotal tracker client. Thanks to [@stephensxu](http://github.com/stephensxu).
-  In order to create the client and connect to pivotal tracker, you run `gong login pivotal`
+# Run tests
+make test
+
+# See all available commands
+make help
+```
+
+### Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Project Structure
+
+```
+gong/
+├── cmd/gong/          # Main CLI application
+├── assets/            # Logo and visual assets
+├── git-hooks/         # Sample Git hooks
+├── client.go          # Generic client interface
+├── jira.go           # Jira client implementation
+└── slugger.go        # Branch name slugification
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Original author: [Avi Zurel](https://github.com/KensoDev)
+- Inspired by the need for seamless Git and issue tracker workflows
+
+## Changelog
+
+### 1.7.0 (2025)
+- **BREAKING:** Removed Pivotal Tracker support (Pivotal Tracker has been discontinued)
+- Modernized Go tooling (Go 1.23)
+- Replaced deprecated `ioutil` package
+- Added GitHub Actions CI/CD
+- Added Makefile for build automation
+- Improved README with badges and better structure
+- Added new logo and branding
+- Migrated from Travis CI to GitHub Actions
+- Changed default branch from `master` to `main`
+
+### 1.6.0
+- Added transitions to the config and outputting the transitions to stdout
 
 ### 1.3.4
+- Added `create` command to open browser on create ticket URL
 
-* Added the `create` command. Opens up the browser on the create ticket URL for
-  the specific issue tracker
+## Support
 
-
-## Upcoming features
-
-### `gong slack`
-
-Send a message to a slack channel, tagging the issue you are working on
-
-### `gong next/pick`
-
-Show you the next items on your backlog, be able to start one without opening the browser
+- Issues: [GitHub Issues](https://github.com/KensoDev/gong/issues)
+- Twitter: [@KensoDev](https://twitter.com/KensoDev)
 
