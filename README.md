@@ -464,6 +464,34 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Changelog
 
+### 2.0.0 (2026) - Major Release ✨
+
+**New Features:**
+- 🎯 **Interactive Issue Creation**: `gong create <PROJECT-KEY>` now creates issues interactively with a minimal TUI
+  - Select issue type from available types
+  - Prompt for required fields only
+  - Multi-line description support using your default editor
+  - Auto-creates branch with proper naming convention
+  - Smart branch type mapping (Bug→bugfix, Story→feature, etc.)
+- 🔗 **Automatic Git Hook Installation**: `gong install-hooks` command
+  - Automatically prompted on first `gong create` or `gong start`
+  - Smart installation: appends to existing hooks instead of replacing
+  - Auto-links every commit to JIRA ticket
+- 📝 **Enhanced Documentation**: Complete workflow examples and configuration guide
+- ✅ **Comprehensive Test Suite**: 27 tests covering all new functionality
+
+**Breaking Changes:**
+- `gong create` now requires a project key argument and creates issues interactively (previously opened browser)
+
+**Bug Fixes:**
+- Fixed issue ID extraction from branch names with various formats
+- Improved error messages with detailed JIRA API responses
+
+**Internal:**
+- Added `hooks.go` for git hook management
+- Added `jira_create_test.go`, `hooks_test.go`, `integration_test.go`
+- Updated CLI interface to support new create workflow
+
 ### 1.7.0 (2025)
 - **BREAKING:** Removed Pivotal Tracker support (Pivotal Tracker has been discontinued)
 - Modernized Go tooling (Go 1.23)
@@ -484,5 +512,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Support
 
 - Issues: [GitHub Issues](https://github.com/KensoDev/gong/issues)
-- Twitter: [@KensoDev](https://twitter.com/KensoDev)
+- Twitter: [@avi_zurel](https://twitter.com/avi_zurel)
 
