@@ -13,6 +13,25 @@
 
 ---
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Quick Start](#quick-start)
+- [Installation](#installation)
+- [Commands](#commands)
+  - [gong login](#gong-login---authenticate-with-jira)
+  - [gong create](#gong-create---create-issues-interactively--new) (NEW)
+  - [gong start](#gong-start---start-working-on-existing-issue)
+  - [gong browse](#gong-browse---open-issue-in-browser)
+  - [gong comment](#gong-comment---add-comments-via-pipe)
+  - [gong install-hooks](#gong-install-hooks---auto-link-commits-to-issues--new) (NEW)
+- [Complete Workflows](#complete-workflows)
+- [Configuration](#configuration)
+- [Development](#development)
+- [Changelog](#changelog)
+
+---
+
 ## Overview
 
 **Gong** is a CLI tool that bridges the gap between issue trackers and Git workflows. Stay in your terminal and maintain your development flow while working with Jira and other project management tools.
@@ -445,13 +464,23 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 ```
 gong/
-├── cmd/gong/          # Main CLI application
-├── assets/            # Logo and visual assets
-├── git-hooks/         # Sample Git hooks
-├── client.go          # Generic client interface
-├── jira.go           # Jira client implementation
-└── slugger.go        # Branch name slugification
+├── cmd/gong/              # Main CLI application
+│   └── main.go            # Command definitions and routing
+├── assets/                # Logo and visual assets
+├── git-hooks/             # Sample Git hooks
+├── client.go              # Generic client interface
+├── jira.go                # JIRA client implementation
+├── hooks.go               # Git hook management (NEW)
+├── slugger.go             # Branch name slugification
+├── client_test.go         # Client interface tests
+├── jira_test.go           # JIRA client tests
+├── jira_create_test.go    # Create flow tests (NEW)
+├── hooks_test.go          # Hook installation tests (NEW)
+├── integration_test.go    # End-to-end tests (NEW)
+└── slugger_test.go        # Slugification tests
 ```
+
+**Test Coverage:** 27 tests across 5 test suites
 
 ## License
 
@@ -513,4 +542,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Issues: [GitHub Issues](https://github.com/KensoDev/gong/issues)
 - Twitter: [@avi_zurel](https://twitter.com/avi_zurel)
-
