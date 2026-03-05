@@ -18,13 +18,34 @@
 **Gong** is a CLI tool that bridges the gap between issue trackers and Git workflows. Stay in your terminal and maintain your development flow while working with Jira and other project management tools.
 
 **Key Features:**
-- Create Git branches directly from issue IDs with proper naming conventions
-- Automatically transition issues to "started" state
-- Comment on issues via stdin pipes (perfect for sending diffs or file contents)
-- Link commits to issues via Git hooks
-- Browse issues in your default browser from the command line
+- 🎯 **Create issues interactively** with a minimal TUI - no browser needed
+- 🌿 **Auto-create Git branches** with proper naming conventions (`feature/PROJ-123-issue-title`)
+- 🔗 **Auto-link commits to issues** with intelligent git hook installation
+- 🚀 **Transition issues** to "started" state automatically
+- 💬 **Comment on issues** via stdin pipes (perfect for sending diffs or file contents)
+- 🌐 **Browse issues** in your default browser from the command line
+- ✏️ **Multi-line descriptions** using your preferred editor
 
-## Usage
+## Quick Start
+
+```bash
+# 1. Install gong
+go install github.com/KensoDev/gong/cmd/gong@latest
+
+# 2. Login to your JIRA instance
+gong login jira
+
+# 3. Create a new issue interactively
+gong create OPS
+# - Select issue type (Bug, Story, Task, etc.)
+# - Enter summary
+# - Add description (opens your editor)
+# - Branch created automatically!
+
+# 4. All your commits will now include the JIRA ticket link!
+git commit -m "Implement new feature"
+# Result: "Implement new feature\n\n[OPS-123](https://your-jira.com/browse/OPS-123)"
+```
 
 ## Installation
 
@@ -65,82 +86,331 @@ brew install gong
 
 **Want to add support for another tracker?** Contributions are welcome! The codebase uses a generic `Client` interface that makes adding new trackers straightforward.
 
-### Login
+## Commands
 
-In order to use `gong` you first you need to login.
+### `gong login` - Authenticate with JIRA
 
-`gong login {client-name}`
+Before using gong, you need to authenticate with your JIRA instance.
 
-Each of the supported clients will prompt the required fields in order to login to the system. Jira will need username, pass and a couple more while others might only need an API token.
+```bash
+gong login jira
+```
 
-Once you input all of the details the client will attempt to login. If succeeded it will let you know.
+You'll be prompted for:
+- **Username**: Your JIRA username or email
+- **Domain**: Your JIRA instance (e.g., `yourcompany.atlassian.net`)
+- **Password**: Your password or API token (recommended)
+- **Project Prefix**: Default project key prefix (optional)
+- **Transitions**: Comma-separated list of allowed issue transitions (e.g., `In Progress,Started`)
+
+**Using API Tokens (Recommended):**
+1. Go to https://id.atlassian.com/manage-profile/security/api-tokens
+2. Create a new API token
+3. Use the token as your password when logging in
 
 [![asciicast](https://asciinema.org/a/dcko3kv5xwobpf4rgj0e4ulyo.png)](https://asciinema.org/a/dcko3kv5xwobpf4rgj0e4ulyo)
 
-### Start working on an issue
+### `gong start` - Start Working on Existing Issue
 
-`gong start {issue-id} --type feature`
+Start working on an existing JIRA issue.
 
-If you want to start working on an issue, you can type in `gong start` with the
-issue id and what type of work is this (defaults to feature).
+```bash
+gong start <ISSUE-ID> [--type <branch-type>]
+```
 
-This will do a couple of things
+**Examples:**
+```bash
+# Start working on a story/task (default: feature)
+gong start PROJ-123
 
-1. Create a branch name `{type}/{issue-id}-{issue-title-sluggified}`
-2. Transition the issue to a started state
+# Start working on a bug
+gong start PROJ-456 --type bugfix
+
+# Start working with custom branch type
+gong start PROJ-789 --type hotfix
+```
+
+**What it does:**
+1. Fetches the issue title from JIRA
+2. Creates a branch: `{type}/{issue-id}-{slugified-title}`
+3. Transitions the issue to "started" state (based on your configured transitions)
+4. Checks out the new branch
+5. Prompts to install git hooks (first time only)
+
+**Example:**
+```bash
+gong start OPS-123 --type feature
+# Creates branch: feature/OPS-123-implement-user-authentication
+# Transitions OPS-123 to "In Progress"
+# Checks out the branch
+```
+
+**Flags:**
+- `--type`: Branch type prefix (default: `feature`)
+  - Common types: `feature`, `bugfix`, `hotfix`, `chore`, `docs`
+  - Or set `GONG_DEFAULT_BRANCH_TYPE` environment variable
 
 [![asciicast](https://asciinema.org/a/c5libsysjmb5f8f8gizkbldzv.png)](https://asciinema.org/a/c5libsysjmb5f8f8gizkbldzv)
 
-### `gong browse`
+### `gong browse` - Open Issue in Browser
 
-While working on a branch that matches the gong regular expression (look
-above), you can type `gong browse` and it will open up a browser opened on the
-issue automatically.
+Opens the current issue in your default browser.
 
-### `gong comment`
+```bash
+gong browse
+```
 
-While working on a branch that matches the gong regular expression, you can
-type `echo "comment" | gong comment` and it will send a comment on the ticket.
+**What it does:**
+- Extracts the JIRA ticket ID from your current branch name
+- Opens the issue in your default browser
 
-### Why a pipe?
+**Example:**
+```bash
+# On branch: feature/OPS-123-new-feature
+gong browse
+# Opens: https://your-jira.atlassian.net/browse/OPS-123
+```
 
-The reason for choosing a pipe and not just have the comment as an argument is to have the ability to send **any** output to the comment.
+### `gong comment` - Add Comments via Pipe
 
-What I find most useful is to send diffs, files, buffers from vim and more.
+Add comments to the current issue by piping content through stdin.
 
-With this approach, I find I write much better comments to tickets. You will do the same :)
+```bash
+<command> | gong comment
+```
+
+**Why a pipe?**
+This design allows you to send **any** output directly to JIRA comments:
+- Git diffs
+- File contents
+- Command outputs
+- Vim buffers
+- Test results
+
+**Examples:**
+```bash
+# Send a simple message
+echo "Fixed the authentication bug" | gong comment
+
+# Send git diff
+git diff | gong comment
+
+# Send file contents
+cat error.log | gong comment
+
+# Send test results
+npm test | gong comment
+
+# From vim: select lines and run
+:'<,'>!gong comment
+```
+
+**What it does:**
+- Extracts ticket ID from current branch name
+- Posts the piped content as a comment to the JIRA issue
+- Preserves formatting (great for code snippets and logs)
 
 ![asciicast](https://asciinema.org/a/d0rcjavbv55lbq1xpsrqiyyu6.png)](https://asciinema.org/a/d0rcjavbv55lbq1xpsrqiyyu6)
 
-### `gong prepare-commit-message`
+### `gong install-hooks` - Auto-Link Commits to Issues ✨ **NEW**
 
-This is **not** meant to be used directly, instead it is meant to be wrapped with simple wrapper git hooks.
+Automatically install git hooks that add JIRA ticket links to every commit.
 
-Sample hooks can be found in `git-hooks` directory.
+```bash
+gong install-hooks
+```
 
-All you need to do is to copy them into your `.git/hooks` directory.
+**What it does:**
+- Installs `prepare-commit-msg` hook in `.git/hooks/`
+- Automatically extracts ticket ID from branch name
+- Adds JIRA link to every commit message
+- **Smart installation**: Appends to existing hooks instead of replacing them
 
-This will add a link to the issue to every commit. Whether you do `git commit "commit message" or edit the commit message using the editor with `git commit`
+**Automatic Installation:**
+When you run `gong create` or `gong start` for the first time in a repo, you'll be prompted:
+```
+Git hook not installed. Install prepare-commit-msg hook to auto-add ticket IDs to commits? (y/n)
+```
 
-### Install commit hooks on your repository
+**Example:**
+```bash
+# On branch: feature/OPS-123-new-feature
+git commit -m "Implement authentication"
 
+# Commit message becomes:
+# Implement authentication
+#
+# [OPS-123](https://your-jira.atlassian.net/browse/OPS-123)
+```
+
+**Manual Installation (Alternative):**
 ```bash
 curl https://raw.githubusercontent.com/KensoDev/gong/main/git-hooks/prepare-commit-msg > .git/hooks/prepare-commit-msg
 chmod +x .git/hooks/prepare-commit-msg
-
-curl https://raw.githubusercontent.com/KensoDev/gong/main/git-hooks/commit-msg > .git/hooks/commit-msg
-chmod +x .git/hooks/commit-msg
 ```
 
-### `gong create`
+**Note:** If you already have a `prepare-commit-msg` hook, gong will append its logic to preserve your existing hooks.
 
-Gong create will open the browser on the issue tracker create ticket flow. You
-can then copy over the issue-id and run `gong start` which will create the
-branch and you cn start working on your ticket.
+### `gong prepare-commit-message`
+
+This command is used internally by the git hook. You typically don't need to run it directly.
+
+It extracts the JIRA ticket ID from your branch name and formats it as a markdown link.
+
+### `gong create` - Create Issues Interactively ✨ **NEW**
+
+Create JIRA issues directly from your terminal with an interactive TUI.
+
+```bash
+gong create <PROJECT-KEY>
+```
+
+**Example:**
+```bash
+gong create OPS
+```
+
+**Interactive Workflow:**
+1. **Select Issue Type**: Choose from Bug, Story, Task, Epic, etc.
+2. **Enter Summary**: One-line title for the issue
+3. **Add Description**: Press Enter to open your editor (`$EDITOR` or vim) for multi-line descriptions
+4. **Issue Created**: JIRA issue created automatically
+5. **Branch Created**: Git branch created and checked out with format `{type}/{ISSUE-ID}-{slugified-title}`
+6. **Git Hook Installed**: On first use, prompts to install commit hooks for auto-linking
+
+**Branch Type Mapping:**
+- Bug/Defect → `bugfix/`
+- Story/Task/Feature → `feature/`
+- Epic → `epic/`
+- Improvement/Enhancement → `enhancement/`
+- Sub-task → `task/`
+
+**Example Output:**
+```
+Select issue type
+▸ Task
+  Story
+  Bug
+  Epic
+
+Summary: Implement user authentication
+Description (optional, press Enter to skip): [Opens editor]
+
+Creating issue...
+✓ Created issue: OPS-123
+✓ Created and checked out branch: feature/OPS-123-implement-user-authentication
+Success! Now working on branch: feature/OPS-123-implement-user-authentication
+```
+
+**Environment Variables:**
+- `GONG_DEFAULT_BRANCH_TYPE`: Override branch type (e.g., `export GONG_DEFAULT_BRANCH_TYPE=custom`)
+- `EDITOR`: Set your preferred editor for descriptions (default: vim)
+
+---
+
+## Complete Workflows
+
+### Workflow 1: Create New Issue from Scratch
+
+```bash
+# Create issue interactively
+gong create OPS
+# 1. Select issue type (Bug, Story, Task...)
+# 2. Enter summary
+# 3. Add description (opens editor)
+# 4. Issue created: OPS-456
+# 5. Branch created: feature/OPS-456-your-issue-title
+# 6. Git hook installed (prompts on first use)
+
+# Make changes
+vim src/feature.js
+
+# Commit (ticket link added automatically!)
+git commit -m "Implement feature"
+# Result: "Implement feature\n\n[OPS-456](https://jira.com/browse/OPS-456)"
+
+# Push and create PR
+git push -u origin feature/OPS-456-your-issue-title
+```
+
+### Workflow 2: Work on Existing Issue
+
+```bash
+# Start working on existing issue
+gong start OPS-789
+# Creates: feature/OPS-789-existing-issue-title
+# Transitions: OPS-789 to "In Progress"
+
+# Make changes
+vim src/bugfix.js
+
+# View issue in browser
+gong browse
+
+# Send diff as comment
+git diff | gong comment
+
+# Commit
+git commit -m "Fix the bug"
+```
+
+### Workflow 3: Bug Fix Workflow
+
+```bash
+# Create bug issue
+gong create OPS
+# Select: Bug
+# Branch created: bugfix/OPS-999-fix-login-error
+
+# Fix and test
+vim src/auth.js
+npm test
+
+# Send test results to JIRA
+npm test | gong comment
+
+# Commit and push
+git commit -m "Fix login error"
+git push -u origin bugfix/OPS-999-fix-login-error
+```
+
+---
+
+## Configuration
+
+### Environment Variables
+
+- `GONG_DEFAULT_BRANCH_TYPE`: Set default branch type
+  ```bash
+  export GONG_DEFAULT_BRANCH_TYPE=feature
+  ```
+
+- `EDITOR`: Set your preferred editor for multi-line descriptions
+  ```bash
+  export EDITOR=nvim  # or vim, nano, code --wait, etc.
+  ```
+
+### Config File Location
+
+Credentials are stored in `~/.gong.json` with the following structure:
+```json
+{
+  "client": "jira",
+  "username": "your-email@company.com",
+  "password": "your-api-token",
+  "domain": "https://yourcompany.atlassian.net",
+  "project_prefix": "OPS",
+  "transitions": "In Progress,Started"
+}
+```
+
+**Security Note:** Use JIRA API tokens instead of passwords. Never commit this file to version control.
+
+---
 
 ## Issues/Feedback
 
-If you have any issues, please open one here on Github or hit me up on twitter [@KensoDev](https://twitter.com/KensoDev)
+If you have any issues, please open one here on Github or reach out on Twitter [@avi_zurel](https://twitter.com/avi_zurel)
 
 ## Development
 

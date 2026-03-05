@@ -46,8 +46,8 @@ func (f *FakeClient) PrepareCommitMessage(branchName, commitMessage string) stri
 	return "Fake commit message"
 }
 
-func (f *FakeClient) Create() (string, error) {
-	return "This is the URL", nil
+func (f *FakeClient) Create(projectKey string) (string, error) {
+	return fmt.Sprintf("feature/%s-123-fake-branch", projectKey), nil
 }
 
 func (s *ClientSuite) TestClientStartIssue(c *C) {
@@ -81,6 +81,6 @@ func (s *ClientSuite) TestPrepareCommitMessage(c *C) {
 
 func (s *ClientSuite) TestCreate(c *C) {
 	client := &FakeClient{}
-	url, _ := Create(client)
-	c.Assert(url, Equals, "This is the URL")
+	branchName, _ := Create(client, "TEST")
+	c.Assert(branchName, Equals, "feature/TEST-123-fake-branch")
 }

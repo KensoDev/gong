@@ -5,12 +5,14 @@ go 1.23
 require (
 	github.com/andygrunwald/go-jira v1.16.0
 	github.com/fatih/color v1.14.1
+	github.com/manifoldco/promptui v0.9.0
 	github.com/segmentio/go-prompt v1.2.1-0.20161017233205-f0d19b6901ad
 	github.com/urfave/cli v1.22.12
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c
 )
 
 require (
+	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/golang-jwt/jwt/v4 v4.4.2 // indirect

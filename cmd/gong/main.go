@@ -85,6 +85,9 @@ func main() {
 
 				color.Green(string(out))
 
+				// Check and offer to install git hooks
+				gong.CheckAndInstallHooks()
+
 				return nil
 			},
 		},
@@ -207,26 +210,46 @@ func main() {
 		},
 		{
 			Name:  "create",
-			Usage: "Open the browser on the create ticket page",
+			Usage: "Create a new issue interactively. Usage: gong create <PROJECT-KEY>",
 			Action: func(c *cli.Context) error {
+				if c.NArg() == 0 {
+					color.Red("You must provide a project key (e.g., gong create OPS)")
+					return nil
+				}
+
+				projectKey := c.Args()[0]
+
 				client, err := gong.NewAuthenticatedClient()
 
 				if err != nil {
-					color.Red("Problem starting a client")
+					color.Red("Problem starting a client: %s", err.Error())
 					return err
 				}
 
-				url, err := gong.Create(client)
+				branchName, err := gong.Create(client, projectKey)
 
 				if err != nil {
-					color.Red(err.Error())
+					color.Red("Problem creating issue: %s", err.Error())
 					return err
 				}
 
-				cmd := "open"
-				args := []string{url}
+				color.Green("Success! Now working on branch: %s", branchName)
 
-				_, _ = exec.Command(cmd, args...).Output()
+				// Check and offer to install git hooks
+				gong.CheckAndInstallHooks()
+
+				return nil
+			},
+		},
+		{
+			Name:  "install-hooks",
+			Usage: "Install git hooks to auto-add ticket IDs to commits",
+			Action: func(c *cli.Context) error {
+				err := gong.InstallHooks()
+				if err != nil {
+					color.Red("Failed to install hooks: %s", err.Error())
+					return err
+				}
 				return nil
 			},
 		},
