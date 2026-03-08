@@ -1,6 +1,4 @@
 # GoReleaser configuration for gong
-version: 2
-
 before:
   hooks:
     - go mod tidy
@@ -19,7 +17,6 @@ builds:
     goarch:
       - amd64
       - arm64
-    # Ignore windows/arm64 as it's not commonly used
     ignore:
       - goos: windows
         goarch: arm64
@@ -51,7 +48,7 @@ checksum:
   name_template: 'checksums.txt'
 
 snapshot:
-  version_template: "{{ incpatch .Version }}-next"
+  name_template: "{{ incpatch .Version }}-next"
 
 changelog:
   sort: asc
@@ -81,7 +78,7 @@ release:
     name: gong
   draft: false
   prerelease: auto
-  mode: replace
+  name_template: "{{.ProjectName}}-v{{.Version}}"
   header: |
     ## Gong {{ .Tag }} Release
 
@@ -100,7 +97,7 @@ release:
     **Full Changelog**: https://github.com/KensoDev/gong/compare/{{ .PreviousTag }}...{{ .Tag }}
 
 brews:
-  - repository:
+  - tap:
       owner: KensoDev
       name: homebrew-tap
     folder: Formula
